@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:14:17 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 05:08:58 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 00:10:24 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	add_in_list(t_data *info, char *content)
 		{
 			ft_free(current->value);
 			current->value = ft_strdup(key[1]);
+			lock(current->value);
 		}
 		current->global = GLOBAL;
 	}
@@ -97,7 +98,7 @@ int	ft_export(t_data *info, char **content)
 		{
 			if (add_in_list(info, content[i]) == -1)
 			{
-				// TODO: Handle error malloc				
+				// TODO: Handle error malloc
 			}
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:43:41 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 05:13:31 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 00:10:40 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,8 @@ t_env	*init_env(char *envp, int cas)
 	new->global = cas;
 	new->next = NULL;
 	new->before = NULL;
+	lock(new);
+	lock(new->key);
+	lock(new->value);
 	return (new);
 }

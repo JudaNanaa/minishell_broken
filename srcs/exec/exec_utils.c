@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 00:03:52 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 00:18:23 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void upgrade_shlvl(void)
 			env->value = ft_sprintf("%d", 0);
 		else
 			env->value = ft_sprintf("%d", 0);
+		lock(env->value);
 	}
 }
 
@@ -189,6 +190,7 @@ void exec_pipe(t_token *node)
 		dup2(fd[1], STDOUT_FILENO);
 		(close(fd[0]), close(fd[1]));
 		exec(node->left);
+		free_and_exit(get_data(NULL, GET)->status);
 	}
 	pid[1] = ft_fork();
 	if (pid[1] == 0)
@@ -196,6 +198,7 @@ void exec_pipe(t_token *node)
 		dup2(fd[0], STDIN_FILENO);
 		(close(fd[0]), close(fd[1]));
 		exec(node->right);
+		free_and_exit(get_data(NULL, GET)->status);
 	}
 	(close(fd[0]), close(fd[1]));
 	(waitpid(pid[0], &status, 0), exit_status(status));

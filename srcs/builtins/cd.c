@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:11:50 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 05:13:30 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 00:13:08 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	change_old_pwd_in_env(char *old, char *old_pwd)
 		}
 		else
 			env->value = old_pwd;
+		lock(env->value);
 	}
 }
 
@@ -40,6 +41,7 @@ void	change_pwd_in_env(t_data *info, char *old_pwd)
 	if (pwd)
 	{
 		env->value = ft_pwd(GET, info);
+		lock(env->value);
 		change_old_pwd_in_env(pwd, old_pwd);
 	}
 	else

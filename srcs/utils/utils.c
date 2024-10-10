@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 16:58:26 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 22:29:25 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 00:13:39 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	for_pwd_and_oldpwd(t_data *data)
 	}
 	ft_free(env->value);
 	env->value = ft_pwd(GET, data);
+	lock(env->value);
 }
 
 void	set_pwd_and_shlvl(t_data *data)
@@ -122,5 +123,6 @@ void	set_pwd_and_shlvl(t_data *data)
 			env->value = ft_sprintf("%d", 0);
 		else
 			env->value = ft_sprintf("%d", 1);
+	lock(env->value);
 	}
 }

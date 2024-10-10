@@ -38,7 +38,7 @@ void	if_potentialy_a_directory(char *command, t_data *data)
 		ft_fprintf(2, "%s: %s: Is a directory\n", data->name, command);
 		free_and_exit(126);
 	}
-	if (ft_access(command) == 0)
+	if (ft_access(command) == true)
 		return ;
 	if (errno == EACCES)
 	{
@@ -59,7 +59,7 @@ char	*find_path(char *command, t_data *data)
 	i = 0;
 	if (ft_strchr(command, '/'))
 		if_potentialy_a_directory(command, data);
-	if (ft_strchr(command, '/') && ft_access(command) == 0)
+	if (ft_strchr(command, '/') && ft_access(command) == true)
 		return (command);
 	value = ft_getenv("PATH");
 	if (value)
@@ -85,8 +85,8 @@ void exec_cmd(t_token *node)
 
 	data = get_data(NULL, GET);
 	open_files(node);
-	path = find_path(node->args[0], data);
 	envp = t_env_to_envp(data->env, GLOBAL);
+	path = find_path(node->args[0], data);
 	if (path == NULL)
 	{
 		ft_fprintf(2, "%s: %s: command not found\n", data->name, node->args[0]);
@@ -190,11 +190,68 @@ void after_exec(t_data *data, struct termios *term)
 	check_if_signal(data);
 }
 
+char	*find_path_cd(char *command)
+{
+	int		i;
+	char	*path;
+	char	**split;
+	char	*value;
+
+	i = 0;
+	value = ft_getenv("PATH");
+	if (value)
+	{
+		split = ft_split(value, ":");
+		while (split[i])
+		{
+			path = ft_sprintf("%s/%s", split[i], command);
+			if (ft_access(path) == true)
+				return (ft_free_2d(split), path);
+			(ft_free(path), i++);
+		}
+		ft_free_2d(split);
+	}
+	return (NULL);
+}
+
+int try_cd(char *directory)
+{
+	if (chdir(directory) == -1)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+void single_command(t_token *node)
+{
+	char	*path;
+	int status;
+	int pid;
+
+	if (node->type == SUBSHELL)
+	{
+		pid = ft_fork();
+		if (pid == 0)
+			exec_subshell(node);
+		(waitpid(pid, &status, 0), exit_status(status));
+	}
+	else
+	{
+		path = find_path_cd(node->args[0]);
+		if (path == NULL && !node->args[1])
+		{
+			if (try_cd(node->args[0]) == EXIT_SUCCESS)
+				return;
+		}
+		pid = ft_fork();
+		if (pid == 0)
+			exec(node);
+		(waitpid(pid, &status, 0), exit_status(status));
+	}
+}
+
 void start_exec(t_token *node)
 {
-	int pid;
 	t_data *data;
-	int status;
 	struct termios	term;
 
 	data = get_data(NULL, GET);
@@ -202,12 +259,7 @@ void start_exec(t_token *node)
 	if (data->is_child == false)
 		set_signal_parent_exec();
 	if ((node->type == CMD && check_built_in(node->content) == false) || node->type == SUBSHELL)
-	{
-		pid = ft_fork();
-		if (pid == 0)
-			exec(node);
-		(waitpid(pid, &status, 0), exit_status(status));
-	}
+			single_command(node);
 	else
 		exec(node);
 	after_exec(data, &term);

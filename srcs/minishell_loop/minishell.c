@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 23:59:49 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 00:05:41 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ void loop_minishell(t_data *data)
 		replace_aliases(queue.first);
 		print_AST_test(queue.first);
 		start_exec(queue.first);
+		clear_garbage();
 	}
 }
