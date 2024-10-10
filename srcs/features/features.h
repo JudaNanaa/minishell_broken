@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:25:18 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 05:13:32 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/10 23:01:13 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define MINISHELL_PROMPT "\001\033[36;1m\002minishell \001\033[0m\002 "
 
 char	***get_alias(char ***init_alias);
-int		check_if_alias(void *data, char ***aliases);
+int	check_if_alias(t_token *command, char ***aliases);
 int		init_aliases(void);
 char	***search_aliases(int fd);
 char	**line_to_alias(char *line);

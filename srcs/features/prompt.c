@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:42:23 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/09 00:26:15 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/10 22:50:00 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*add_dir_name(char *prompt)
 	char	*dir;
 	char	*temp;
 
-	temp = ft_pwd();
+	temp = ft_pwd(GET, get_data(NULL, GET));
 	if (temp == NULL || ft_strchr(temp, '/') == NULL)
 	{
 		dir = ft_strjoin(prompt, "minishell ");
@@ -70,8 +70,8 @@ char	*add_git_head(char *prompt)
 	temp = git_head();
 	if (temp == NULL)
 		return (prompt);
-	git = multi_strjoin(3, "\001\033[34;1m\002git:(\001\033[31;1m\002", temp,
-			"\001\033[34;1m\002) ");
+	git = ft_sprintf(
+		"\001\033[34;1m\002git:(\001\033[31;1m\002%s\001\033[34;1m\002) ", temp);
 	ft_free(temp);
 	if (git == NULL)
 		return (prompt);
@@ -104,7 +104,7 @@ char	*add_arrow(void)
 	char	*color;
 	char	*arrow;
 
-	if (get_status() == EXIT_SUCCESS)
+	if (get_data(NULL, GET)->status == EXIT_SUCCESS)
 		color = "\001\033[32;5m\002";
 	else
 		color = "\001\033[31;5m\002";

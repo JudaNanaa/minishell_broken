@@ -35,6 +35,8 @@ AST = $(addprefix ast/, ast_moussa.c)
 
 # AST = $(addprefix ast/, ast.c)
 
+EXEC = $(addprefix exec/, exec.c exec_utils.c)
+
 MINISHELL = $(addprefix minishell_loop/, minishell.c)
 
 BUILTINS = $(addprefix builtins/, env.c cd.c echo.c export.c pwd.c exit.c unset.c)
@@ -47,7 +49,7 @@ UTILS = $(addprefix utils/, utils.c)
 
 OBJS_DIR = .objets/
 
-SRCS = main.c tests_utils.c $(PARSING) $(MINISHELL) $(SIGNALS) $(AST) $(ERROR) $(ENV) $(UTILS) $(BUILTINS) #$(FEATURES)
+SRCS = main.c tests_utils.c $(PARSING) $(MINISHELL) $(SIGNALS) $(AST) $(ERROR) $(ENV) $(UTILS) $(BUILTINS) $(EXEC) $(FEATURES)
 
 SRCS := $(SRCS:%=$(SRCS_DIR)/%)
 
@@ -62,7 +64,8 @@ BAR_SIZE		= 50
 TOTAL_FILES		:= $(words $(SRCS))
 COMPILED_FILES	:= 0
 
-GARBAGE = garbage_collector.a
+GARBAGE_DIR = srcs/garbage_collector/
+GARBAGE = $(GARBAGE_DIR)garbage_collector.a
 
 LIBFT = libft.a
 
@@ -80,7 +83,7 @@ $(LIBFT) :
 $(GARBAGE) :
 	@echo
 	@echo "👷$(GREEN)compiling garbage collector$(END)👷"
-	@make -sC srcs/garbage_collector/
+	@make -sC $(GARBAGE_DIR)
 	@echo
 	@echo "👷$(GREEN)garbage collector compilation done$(END)👷"
 
@@ -140,12 +143,13 @@ docker:
 clean : 
 	@rm -rf $(OBJS_DIR)
 	@make clean -sC ./libft
+	@make clean -sC $(GARBAGE_DIR)
 	@echo "🧼🧼$(PURPLE)objects cleaned$(END)🧼🧼"
 
 fclean : clean
 	@rm -rf $(NAME)
 	@make fclean -sC ./libft
-	@make fclean -sC ./srcs/garbage_collector/
+	@make fclean -sC $(GARBAGE_DIR)
 	@echo "🧼🧼$(PURPLE)executable cleaned$(END)🧼🧼"
 
 re : fclean all

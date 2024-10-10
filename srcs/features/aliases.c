@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   aliases.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:06:03 by ibaby             #+#    #+#             */
-/*   Updated: 2024/09/13 03:26:15 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/10 22:53:43 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "features.h"
 
-int	replace_aliases(t_command *last_command)
+int	replace_aliases(t_token *last_token)
 {
 	static char	***alias;
 
@@ -22,31 +22,31 @@ int	replace_aliases(t_command *last_command)
 		if (alias == NULL)
 			return (EXIT_SUCCESS);
 	}
-	if (last_command == NULL)
+	if (last_token == NULL)
 		return (EXIT_SUCCESS);
-	if (check_if_alias(last_command, alias) == EXIT_FAILURE)
+	if (check_if_alias(last_token, alias) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (replace_aliases(last_command->left) == EXIT_FAILURE)
+	if (replace_aliases(last_token->left) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (replace_aliases(last_command->right) == EXIT_FAILURE)
+	if (replace_aliases(last_token->right) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	check_if_alias(t_command *command, char ***aliases)
+int	check_if_alias(t_token *command, char ***aliases)
 {
 	int		i;
 	char	**command_arr;
 
 	i = -1;
-	command_arr = command->command;
-	if (command->type != COMMAND || command_arr[0] == NULL)
+	command_arr = command->args;
+	if (command->type != CMD || command_arr[0] == NULL)
 		return (EXIT_SUCCESS);
 	while (aliases[++i] != NULL)
 	{
 		if (ft_strcmp(aliases[i][0], command_arr[0]) == 0)
 		{
-			command->command = insert_alias(command_arr, aliases[i]);
+			command->args = insert_alias(command_arr, aliases[i]);
 			return (EXIT_SUCCESS);
 		}
 	}
@@ -103,7 +103,7 @@ char	**line_to_alias(char *line)
 	int		start;
 
 	i = 6;
-	while (is_whitespace(line[i]) && line[i] != '\0')
+	while ((line[i] == ' ' || line[i] == '\t') && line[i] != '\0')
 		++i;
 	if (line[i] == '\0' || (ft_isalpha(line[i]) == 0 && line[i] != '_'))
 		return (error_log(ALIAS_USAGE, false), NULL);
@@ -114,7 +114,7 @@ char	**line_to_alias(char *line)
 		return (error_log(ALIAS_USAGE, false), NULL);
 	alias = ft_malloc(sizeof(char *) * (count_char(line + i + 2, ' ') + 3));
 	if (alias == NULL)
-		return (malloc_failed("line_to_alias"), NULL);
+		handle_malloc_error("line to alias");
 	alias[0] = ft_substr(line, start, i - start);
 	if (alias[0] == NULL)
 		return (ft_free(alias), NULL);

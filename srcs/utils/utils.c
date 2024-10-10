@@ -6,11 +6,37 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 16:58:26 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 18:14:48 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/10 22:29:25 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
+
+void	add_string_char_2d(char ***tabb, char *str)
+{
+	char	**new;
+	int		i;
+	char	**buff;
+
+	buff = *tabb;
+	new = ft_malloc(sizeof(char *) * (ft_strlen_2d(buff) + 1 + 1));
+	if (!new)
+		handle_malloc_error("pasing");
+	i = 0;
+	while (buff && buff[i])
+	{
+		new[i] = buff[i];
+		if (!new[i])
+			handle_malloc_error("parsing");
+		i++;
+	}
+	new[i] = str;
+	if (!new[i])
+		handle_malloc_error("parsing");
+	new[++i] = NULL;
+	ft_free(buff);
+	*tabb = new;
+}
 
 int	ft_is_numeric(char *nb)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:23:33 by ibaby             #+#    #+#             */
-/*   Updated: 2024/09/18 16:43:19 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/10 22:57:04 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ void	ft_addhistory(char	*str)
 	if (fd == -1)
 		return (error_log("add_history: open(history_file)", true),
 			(void)close(fd));
-	if (ft_putendl_fd(str, fd) == -1)
-		return ((void)close(fd));
-	ft_close_fd(&fd);
+	ft_putendl_fd(str, fd);
+	close(fd);
 }
 
 void	init_history(void)
@@ -38,11 +37,10 @@ void	init_history(void)
 
 	fd = open(HISTORY_FILE, O_RDONLY);
 	if (fd == -1)
-		return (error_log("init_history: open(history_file)", true),
-			ft_close_fd(&fd));
+		return ((void)close(fd));
 	str = get_next_line(fd);
 	if (str == NULL)
-		return (ft_close_fd(&fd));
+		return ((void)close(fd));
 	str = ft_strtrim(str, "\n");
 	add_and_save(str);
 	while (str != NULL && str[0] != '\0')
@@ -50,13 +48,13 @@ void	init_history(void)
 		ft_free(str);
 		str = get_next_line(fd);
 		if (str == NULL)
-			return (ft_close_fd(&fd));
+			return ((void)close(fd));
 		str = ft_strtrim(str, "\n");
 		if (str == NULL)
-			return (ft_close_fd(&fd));
+			return ((void)close(fd));
 		add_and_save(str);
 	}
-	ft_close_fd(&fd);
+	close(fd);
 }
 
 void	add_and_save(char *str)

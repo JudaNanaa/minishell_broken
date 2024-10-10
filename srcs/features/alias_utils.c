@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:24:38 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 05:11:56 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 00:03:51 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	clear_3d_array(char ***alias, int end)
 	i = 0;
 	while (i < end)
 	{
-		free_2d_array((void ***)&alias[i]);
+		ft_free_2d(alias[i]);
 		++i;
 	}
 	ft_free((void *)alias);
@@ -53,10 +53,9 @@ char	**add_alias(char **array, char *line, int start)
 		++i;
 	}
 	line[start + i] = '\0';
-	alias_val = ft_split(line + start, ' ');
+	alias_val = ft_split(line + start, " ");
 	if (alias_val == NULL)
-		return (ft_free(alias_val),
-			malloc_failed("add_alias"), NULL);
+		return (ft_free(alias_val), handle_malloc_error("add alias"), NULL);
 	i = 0;
 	while (alias_val[i] != NULL)
 	{
@@ -78,7 +77,7 @@ char	**insert_alias(char **command, char **alias)
 	new_command = ft_malloc(sizeof(char *)
 			* (ft_strlen_2d(command) + ft_strlen_2d(alias)));
 	if (new_command == NULL)
-		return (malloc_failed("insert_alias"), command);
+		handle_malloc_error("insert alias");
 	while (alias[++i + 1] != NULL)
 		new_command[i] = alias[i + 1];
 	while (command[++j + 1] != NULL)

@@ -6,12 +6,15 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 18:11:46 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/10 23:59:49 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
 #include <readline/readline.h>
+
+#include "../features/features.h"
+char	*minishell_prompt(void);
 
 char	*get_prompt(t_data *data)
 {
@@ -41,7 +44,7 @@ char	*ft_readline(t_data *data)
 
 	while (1)
 	{
-		prompt = get_prompt(data);
+		prompt = minishell_prompt();
 		command_line = readline(prompt);
 		ft_free(prompt);
 		if (g_signal != 0)
@@ -50,7 +53,7 @@ char	*ft_readline(t_data *data)
 			continue ;
 		}
 		if (!command_line)
-			ft_exit(NULL);
+			(ft_fprintf(2, "exit\n"), free_and_exit(data->status));
 		else if (ft_strcmp(command_line, "") == 0)
 			ft_free(command_line);
 		else
@@ -63,25 +66,44 @@ char	*ft_readline(t_data *data)
 void	print_AST(t_token *command);
 t_token	*ast_top(t_token *current);
 void	print_AST_test(t_token *command);
+int	replace_aliases(t_token *last_token);
+
+void subshell_routine(t_data *data, char *command_line)
+{
+	t_queue queue;
+
+	set_signal_parent();
+	queue.first = lexer(data, command_line);
+	if (parser(&queue) == EXIT_FAILURE)
+		return;
+	// queue.first = create_ast(queue.first, 0);
+	queue.first = create_ast_test(queue.first);
+	ft_free(command_line);
+	// print_AST(queue.first);
+	replace_aliases(queue.first);
+	print_AST_test(queue.first);
+	start_exec(queue.first);
+}
 
 void loop_minishell(t_data *data)
 {
 	char *command_line;
 	t_queue queue;
 	
-
 	while (true)
 	{
-		// set_signal_parent();
+		set_signal_parent();
 		// clear_garbage();
 		command_line = ft_readline(data);
 		queue.first = lexer(data, command_line);
 		if (parser(&queue) == EXIT_FAILURE)
 			continue;
-		// queue.first = create_ast(queue.first, -10);
+		// queue.first = create_ast(queue.first, 0);
 		queue.first = create_ast_test(queue.first);
 		ft_free(command_line);
 		// print_AST(queue.first);
+		replace_aliases(queue.first);
 		print_AST_test(queue.first);
+		start_exec(queue.first);
 	}
 }

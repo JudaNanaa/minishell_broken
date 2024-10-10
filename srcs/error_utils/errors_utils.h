@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:05:38 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 16:51:55 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/10 22:39:05 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*ft_re_strjoin(const char *s1, const char *s2);
 # include <stdlib.h>
 # include <string.h>
 
+void	free_and_exit(int status);
 void	ft_close(int *fd);
 void	free_all(void);
 void	print_err(char *err, int erno);

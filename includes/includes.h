@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 23:17:14 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 06:04:22 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/10 22:59:46 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 # include "garbage_collector.h"
 # include "../srcs/parsing/parsing.h"
 # include "../srcs/minishell_loop/minishell_loop.h"
+# include "../srcs/features/features.h"
+# include "../srcs/exec/exec.h"
 
 extern volatile sig_atomic_t	g_signal;
 

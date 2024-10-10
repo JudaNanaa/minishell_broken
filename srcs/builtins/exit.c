@@ -46,24 +46,19 @@ void	ft_exit(char **args)
 	data = get_data(NULL, GET);
 	if (data->is_child == 0)
 		ft_fprintf(2, "exit\n");
-	if (!args)
-	{
-		// TODO: free et quitter si l'utilisateur tape exit sans args
-		// free_and_exit(data->status);
-	}
 	if (args[1])
 	{
 		if (ft_is_numeric(args[1]) == 0 || ft_is_in_range(args[1]) == 0)
 		{
 			ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
 				data->name, args[1]);
-			// free_and_exit(2);
+			free_and_exit(2);
 		}
 		if (!args[2])
-			// free_and_exit((unsigned char)ft_atoi(args[1]));
+			free_and_exit((unsigned char)ft_atoi(args[1]));
 		ft_fprintf(2, "%s: exit: too many arguments\n", data->name);
 		data->status = 1;
 		return ;
 	}
-	// free_and_exit(data->status);
+	free_and_exit(data->status);
 }

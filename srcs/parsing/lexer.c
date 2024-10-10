@@ -6,12 +6,14 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 17:19:30 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/10 23:30:56 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
 #include "parsing.h"
+
+void	ft_addhistory(char	*str);
 
 int is_redirection_type(t_type type)
 {
@@ -204,9 +206,9 @@ t_token *lexer(t_data *data, char *command_line)
 	tmp = ft_strdup(command_line);
 	command_line = check_if_command_line_is_good(data, command_line);
 	if (!command_line)
-		return (add_history(tmp), NULL);
+		return (ft_addhistory(tmp), NULL);
 	ft_free(tmp);
-	add_history(command_line);
+	ft_addhistory(command_line);
 	while (command_line[i])
 	{
 		skip_white_space(command_line, &i);
