@@ -153,10 +153,55 @@ void exec_builtin(t_token *node)
 	(close(save_stdin), close(save_stdout));
 }
 
+int remove_quotes(char *line)
+{
+	int check;
+	int expand;
+
+	check = 1;
+	expand = -1;
+	while (check)
+	{
+		if (line[0] == '"' && line[ft_strlen(line) - 1] == '"')
+		{
+			line[ft_strlen(line) - 1] = '\0';
+			ft_memcpy(line, line + 1, ft_strlen(line));
+			if (expand == -1)
+				expand = true;
+		}
+		else if (line[0] == '\'' && line[ft_strlen(line) - 1] == '\'')
+		{
+			line[ft_strlen(line) - 1] = '\0';
+			ft_memcpy(line, line + 1, ft_strlen(line));
+			if (expand == -1)
+				expand = false;
+		}
+		else
+			check = 0;
+	}
+	if (expand == -1)
+		return (true);
+	return (expand);
+}
+
+void	expand_cmd(t_token *cmd)
+{
+	int	i;
+
+	if (cmd->args == NULL)
+		return ;
+	i = -1;
+	while (cmd->args[++i] != NULL)
+	{
+		cmd->args[i] = expand_if_necessary(cmd->args[i]);
+	}
+}
+
 void exec(t_token *current)
 {
 	if (current->type == CMD)
 	{
+		expand_cmd(current);
 		if (check_built_in(current->content))
 			exec_builtin(current);
 		else
@@ -258,7 +303,8 @@ void start_exec(t_token *node)
 	set_exec(data, &term);
 	if (data->is_child == false)
 		set_signal_parent_exec();
-	if ((node->type == CMD && check_built_in(node->content) == false) || node->type == SUBSHELL)
+	if ((node->type == CMD && check_built_in(node->content) == false)
+		|| node->type == SUBSHELL)
 			single_command(node);
 	else
 		exec(node);

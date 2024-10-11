@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 00:05:41 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 23:05:16 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void subshell_routine(t_data *data, char *command_line)
 	ft_free(command_line);
 	// print_AST(queue.first);
 	replace_aliases(queue.first);
-	print_AST_test(queue.first);
+	// print_AST_test(queue.first);
 	start_exec(queue.first);
 }
 
@@ -103,7 +103,7 @@ void loop_minishell(t_data *data)
 		ft_free(command_line);
 		// print_AST(queue.first);
 		replace_aliases(queue.first);
-		print_AST_test(queue.first);
+		// print_AST_test(queue.first);
 		start_exec(queue.first);
 		clear_garbage();
 	}

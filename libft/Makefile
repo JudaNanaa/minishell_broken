@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: madamou <madamou@student.42.fr>            +#+  +:+       +#+         #
+#    By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/23 16:07:55 by madamou           #+#    #+#              #
-#    Updated: 2024/10/10 05:25:26 by madamou          ###   ########.fr        #
+#    Updated: 2024/10/11 21:43:19 by ibaby            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,11 +75,11 @@ $(OBJS_DIR)/%.o : %.c
 	@for i in `seq 1 $(shell echo "$$(($(BAR_SIZE)-$(COMPILED_FILES)*$(BAR_SIZE)/$(TOTAL_FILES)))")`; do \
 		echo -n "▱" ; \
 	done
-	@echo -n " ($(shell echo "scale=2; $(COMPILED_FILES)/$(TOTAL_FILES) * 100" | bc)%) "
-	@echo -n ""
-	@printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
-	@echo -n " "
-	@printf "%s" $(notdir $<)
+	@echo -n " [$(shell echo "scale=2; $(COMPILED_FILES)/$(TOTAL_FILES) * 100" | bc)%] "
+# @echo -n ""
+# @printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
+# @echo -n " "
+# @printf "%s" $(notdir $<)
 	@printf "\e[0K\r"
 
 bonus: all $(OBJS_BONUS)

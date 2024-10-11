@@ -5,7 +5,7 @@
 #include "parsing/parsing.h"
 #include <unistd.h>
 
- volatile sig_atomic_t	g_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
 int	init_aliases(void);
 void	init_history(void);
 

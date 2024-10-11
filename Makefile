@@ -25,7 +25,7 @@ C_FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS_DIR = srcs/
 
-PARSING = $(addprefix parsing/, before_parsing.c lexer.c parser_utils.c parser.c)
+PARSING = $(addprefix parsing/, before_parsing.c lexer.c parser_utils.c parser.c here_doc.c)
 
 ERROR = $(addprefix error_utils/, err_utils.c error_code.c free_and_exit.c print_err.c)
 
@@ -104,11 +104,11 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 	@for i in `seq 1 $(shell echo "$$(($(BAR_SIZE)-$(COMPILED_FILES)*$(BAR_SIZE)/$(TOTAL_FILES)))")`; do \
 		echo -n "▱" ; \
 	done
-	@echo -n " ($(shell echo "scale=2; $(COMPILED_FILES)/$(TOTAL_FILES) * 100" | bc)%) "
-	@echo -n ""
-	@printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
-	@echo -n " "
-	@printf "%s" $(notdir $<)
+	@echo -n " [$(shell echo "scale=2; $(COMPILED_FILES)/$(TOTAL_FILES) * 100" | bc)%] "
+# @echo -n ""
+# @printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
+# @echo -n " "
+# @printf "%s" $(notdir $<)
 	@printf "\e[0K\r"
 
 message :

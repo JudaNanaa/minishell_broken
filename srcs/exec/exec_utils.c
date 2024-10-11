@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 00:18:23 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 22:29:48 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,32 @@ int open_outfile(t_file *file, int open_mode)
 	return (EXIT_SUCCESS);
 }
 
+int	open_heredoc(t_file *file)
+{
+	int fd[2];
+	int	i;
+	t_data *data;
+
+	i = -1;
+	data = get_data(NULL, GET);
+	if (pipe(fd) == -1)
+	{
+		error_message_file(file->path);
+		if (data->is_child == true)
+			free_and_exit(1);
+		return (EXIT_FAILURE);
+	}
+	if (file->heredoc_content != NULL)
+	{
+		while (file->heredoc_content[++i])
+			ft_putendl_fd(expand_line(file->heredoc_content[i]), fd[1]);
+	}
+	close(fd[1]);
+	ft_dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	return (EXIT_SUCCESS);
+}
+
 int open_files(t_token *node)
 {
 	t_file *files;
@@ -88,8 +114,8 @@ int open_files(t_token *node)
 	{
 		if (files->mode == INFILE)
 			result = open_infile(files);
-		// else if (files->mode == HEREDOC)
-		// 	open_infile(files);
+		else if (files->mode == HEREDOC)
+			result = open_heredoc(files);
 		else if (files->mode == OUT_TRUNC)
 			result = open_outfile(files, O_TRUNC);
 		else if (files->mode == OUT_APP)
@@ -273,3 +299,12 @@ void exec_list(t_token *node)
 	else
 		exec(node->right);
 }
+
+
+int	is_a_var_char(char c)
+{
+	if (ft_isalnum(c) || c == '_')
+		return (1);
+	return (0);
+}
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:23:33 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 22:57:04 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 00:13:21 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	init_history(void)
 
 	fd = open(HISTORY_FILE, O_RDONLY);
 	if (fd == -1)
-		return ((void)close(fd));
+		return ;
 	str = get_next_line(fd);
 	if (str == NULL)
 		return ((void)close(fd));

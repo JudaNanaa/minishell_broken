@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environement_variables_utils.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 15:07:21 by itahri            #+#    #+#             */
-/*   Updated: 2024/10/10 05:13:31 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 21:47:38 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_env	*env_in_struct(char **envp)
 	{
 		new = init_env(envp[i], GLOBAL);
 		if (!new)
-			handle_malloc_error("env initilisation");
+			handle_malloc_error("env initialisation");
 		add_back_env(&env, new);
 		i++;
 	}

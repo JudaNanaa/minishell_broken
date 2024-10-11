@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:07:11 by marvin            #+#    #+#             */
-/*   Updated: 2024/08/11 01:07:07 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 00:13:21 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,18 @@ static int	ft_is_in_charset(char c, char const *sep)
 	return (0);
 }
 
-static int	ft_lenstr(char const *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 static int	ft_malloc_size(char const *s1, char const *sep)
 {
 	int	i;
 	int	j;
 	int	len_s;
 
-	len_s = ft_lenstr(s1);
+	len_s = ft_strlen(s1);
 	i = 0;
 	j = 0;
-	while (ft_is_in_charset(s1[i], sep) == 1)
+	while (ft_is_in_charset(s1[i], sep) == 1 && s1[i])
 		i++;
-	while (ft_is_in_charset(s1[len_s - 1 - j], sep) == 1)
+	while (len_s - 1 - j >= 0 && ft_is_in_charset(s1[len_s - 1 - j], sep) == 1)
 		j++;
 	if (len_s - (i + j) <= 0)
 		return (0);
@@ -61,13 +51,13 @@ static void	ft_fill_str(char const *s1, char *str, char const *sep)
 	int	k;
 	int	len_s;
 
-	len_s = ft_lenstr(s1);
+	len_s = ft_strlen(s1);
 	k = 0;
 	i = 0;
 	j = 0;
-	while (ft_is_in_charset(s1[i], sep) == 1)
+	while (ft_is_in_charset(s1[i], sep) == 1 && s1[i])
 		i++;
-	while (ft_is_in_charset(s1[len_s - 1 - j], sep) == 1)
+	while (len_s - 1 - j >= 0 && ft_is_in_charset(s1[len_s - 1 - j], sep) == 1)
 		j++;
 	while (i < len_s - j)
 		str[k++] = s1[i++];

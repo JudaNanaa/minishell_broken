@@ -46,7 +46,7 @@ typedef enum
 typedef struct s_file
 {
 	t_type mode;
-	int heredoc_fd;
+	char **heredoc_content;
 	char *path;
 	struct s_file *next;
 } t_file;
@@ -68,6 +68,9 @@ typedef struct s_queue
 	t_token *first;
 	t_token *last;
 } t_queue;
+
+// Heredoc
+int	get_heredoc(t_file *new);
 
 // Lexing
 t_token *lexer(t_data *data, char *command_line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:25:32 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 04:34:58 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 22:34:48 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ void	*ft_malloc(unsigned long size)
 	if (is_destroyed(READER, false) == NOT_DEFINED)
 		is_destroyed(SETTER, false);
 	if (is_destroyed(READER, false) == true)
-		return (error_log("ft_malloc: used after dastroyed garbage", false),
-			NULL);
+		return (NULL);
 	if (garbage == NULL)
 	{
 		garbage = init_garbage();
@@ -34,7 +33,7 @@ void	*ft_malloc(unsigned long size)
 	}
 	ptr = malloc(size);
 	if (ptr == NULL)
-		return (error_log("ft_malloc: malloc failed", true), NULL);
+		return (NULL);
 	if (new_garb_node(ptr, garbage, size) == EXIT_FAILURE)
 		return (free(ptr), NULL);
 	return (ptr);
@@ -46,10 +45,12 @@ void	*ft_realloc(void *ptr, unsigned long size_to_add)
 	t_garb_node			*ptr_node;
 	unsigned char		*new_ptr;
 
-	if (ptr == NULL || is_destroyed(READER, false) != false)
-		return (NULL);
 	if (garbage == NULL)
-		return ((void)init_static(&garbage, ptr), NULL);
+		return (garbage = get_garbage(NULL, false), NULL);
+	if (is_destroyed(READER, false) != false)
+		return (NULL);
+	if (ptr == NULL)
+		return (ft_calloc(1, size_to_add));
 	if (size_to_add == 0)
 		return (ptr);
 	ptr_node = find_by_address(ptr, garbage);

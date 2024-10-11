@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 02:37:47 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 22:28:32 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,22 +104,21 @@ int add_redirections(t_token *redir, t_queue *queue)
 	t_file *new;
 	
 	if (redir->next == NULL)
-	{
-		parse_err(NULL);
-		return (EXIT_FAILURE);
-	}
+		return (parse_err(NULL), EXIT_FAILURE);
 	if (redir->next->type == SUBSHELL)
-	{
-		parse_err("(");
-		return (EXIT_FAILURE);
-	}
+		return (parse_err("("), EXIT_FAILURE);
 	new = ft_malloc(sizeof(t_file));
 	if (new == NULL)
 		handle_malloc_error("parsing");
 	new->mode = redir->type;
 	new->path = redir->next->content;
-	new->heredoc_fd = -1;
+	new->heredoc_content = NULL;
 	new->next = NULL;
+	if (new->mode == HEREDOC)
+	{
+		if (get_heredoc(new) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	}
 	add_back_files(&queue->last->files, new);
 	return (EXIT_SUCCESS);
 }

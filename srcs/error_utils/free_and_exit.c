@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_and_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:05:42 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 04:20:27 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 23:46:53 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_err_and_exit(char *err, int status, int erno)
 
 void	handle_malloc_error(char *err)
 {
-	ft_putstr_fd(err, STDERR_FILENO);
+	ft_putendl_fd(err, STDERR_FILENO);
 	destroy_garbage();
 	exit(EXIT_FAILURE);
 }
