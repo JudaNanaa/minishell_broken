@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 17:43:50 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/11 02:37:47 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,12 @@ void add_back_files(t_file **files, t_file *to_add)
 	
 	buff = *files;
 	if (buff == NULL)
-		buff = to_add;
+		*files = to_add;
 	else
 	{
 		while (buff->next)
 			buff = buff->next;
-		buff->next = to_add;	
+		buff->next = to_add;
 	}
 }
 
@@ -105,7 +105,6 @@ int add_redirections(t_token *redir, t_queue *queue)
 	
 	if (redir->next == NULL)
 	{
-		// TODO: Parse error no file or no limiter
 		parse_err(NULL);
 		return (EXIT_FAILURE);
 	}
@@ -116,9 +115,7 @@ int add_redirections(t_token *redir, t_queue *queue)
 	}
 	new = ft_malloc(sizeof(t_file));
 	if (new == NULL)
-	{
-		// TODO: Handle error malloc
-	}
+		handle_malloc_error("parsing");
 	new->mode = redir->type;
 	new->path = redir->next->content;
 	new->heredoc_fd = -1;
@@ -178,6 +175,7 @@ int	fill_queue(t_token *current, t_queue *queue)
 			{
 				if (add_redirections(current, queue) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
+				queue->last->next = NULL;
 				current = current->next->next;
 				continue;
 			}
