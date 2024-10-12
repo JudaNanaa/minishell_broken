@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 23:05:16 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/12 10:09:14 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void loop_minishell(t_data *data)
 	
 	while (true)
 	{
-		set_signal_parent();
+		// set_signal_parent();
 		// clear_garbage();
 		command_line = ft_readline(data);
 		queue.first = lexer(data, command_line);

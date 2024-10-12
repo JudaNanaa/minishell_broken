@@ -47,6 +47,7 @@ typedef struct s_file
 {
 	t_type mode;
 	char **heredoc_content;
+	int expand_heredoc;
 	char *path;
 	struct s_file *next;
 } t_file;
@@ -70,7 +71,7 @@ typedef struct s_queue
 } t_queue;
 
 // Heredoc
-int	get_heredoc(t_file *new);
+int	get_heredoc(t_file *neww);
 
 // Lexing
 t_token *lexer(t_data *data, char *command_line);

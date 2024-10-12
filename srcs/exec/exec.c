@@ -86,6 +86,10 @@ void exec_cmd(t_token *node)
 	data = get_data(NULL, GET);
 	open_files(node);
 	envp = t_env_to_envp(data->env, GLOBAL);
+	if (ft_strcmp(node->args[0], ":") == 0)
+		free_and_exit(EXIT_SUCCESS);
+	if (ft_strcmp(node->args[0], "!") == 0)
+		free_and_exit(EXIT_FAILURE);
 	path = find_path(node->args[0], data);
 	if (path == NULL)
 	{
@@ -110,7 +114,6 @@ void exec_subshell(t_token *node)
 	argv[2] = ft_strdup(node->content);
 	argv[3] = NULL;
 	envp = t_env_to_envp(data->env, GLOBAL);
-	printf("const char *restrict format, ...\n");
 	execve(argv[0], argv, envp);
 }
 
@@ -151,37 +154,6 @@ void exec_builtin(t_token *node)
 	do_builtin(node);
 	(dup2(save_stdin, STDIN_FILENO), dup2(save_stdout, STDOUT_FILENO));
 	(close(save_stdin), close(save_stdout));
-}
-
-int remove_quotes(char *line)
-{
-	int check;
-	int expand;
-
-	check = 1;
-	expand = -1;
-	while (check)
-	{
-		if (line[0] == '"' && line[ft_strlen(line) - 1] == '"')
-		{
-			line[ft_strlen(line) - 1] = '\0';
-			ft_memcpy(line, line + 1, ft_strlen(line));
-			if (expand == -1)
-				expand = true;
-		}
-		else if (line[0] == '\'' && line[ft_strlen(line) - 1] == '\'')
-		{
-			line[ft_strlen(line) - 1] = '\0';
-			ft_memcpy(line, line + 1, ft_strlen(line));
-			if (expand == -1)
-				expand = false;
-		}
-		else
-			check = 0;
-	}
-	if (expand == -1)
-		return (true);
-	return (expand);
 }
 
 void	expand_cmd(t_token *cmd)

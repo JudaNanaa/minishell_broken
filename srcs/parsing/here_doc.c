@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:28:02 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/11 23:55:01 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/12 10:19:26 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "../../includes/includes.h"
+
+int remove_quotes(char *str);
+
 
 void	ctrl_D_mssg(int i, char *eof)
 {
@@ -27,6 +30,7 @@ int	get_heredoc(t_file *new)
 
 	i = 0;
 	data = get_data(NULL, GET);
+	new->expand_heredoc = remove_quotes(new->path);
 	while (++i)
 	{
 		input = readline("heredoc> ");
@@ -39,6 +43,70 @@ int	get_heredoc(t_file *new)
 		add_string_char_2d(&new->heredoc_content, input);
 	}
 	return (EXIT_SUCCESS);
+}
+
+int remove_dquote(char *str)
+{
+	int i;
+	int j;
+	char *sub_str;
+
+	i = 0;
+	j = 1;
+	while (str[i] && str[i] != '"')
+		i++;
+	if (str[i] == '\0')
+		return (false);
+	while (str[i + j] != '"')
+		j++;
+	sub_str = ft_substr(str, i + 1, j - 1);
+	sub_str = ft_re_strjoin(sub_str, &str[i + j + 1]);
+	if (sub_str == NULL)
+		handle_malloc_error("remove dquote");
+	ft_strcpy(str, sub_str);
+	ft_free(sub_str);
+	return (true);
+}
+
+int remove_quote(char *str)
+{
+	int i;
+	int j;
+	char *sub_str;
+
+	i = 0;
+	j = 1;
+	while (str[i] && str[i] != '\'')
+		i++;
+	if (str[i] == '\0')
+		return (false);
+	while (str[i + j] != '\'')
+		j++;
+	sub_str = ft_substr(str, i + 1, j - 1);
+	sub_str = ft_re_strjoin(sub_str, &str[i + j + 1]);
+	if (sub_str == NULL)
+		handle_malloc_error("remove quote");
+	ft_strcpy(str, sub_str);
+	ft_free(sub_str);
+	return (true);
+}
+
+int remove_quotes(char *str)
+{
+	bool check;
+
+	check = true;
+	if (remove_dquote(str) == true)
+	{
+		while (check == true)
+			check = remove_dquote(str);
+	}
+	else if (remove_quote(str) == true)
+	{
+		while (check == true)
+			check = remove_quote(str);
+	}
+	return (check);
 }
 
 char	*ft_normal_format(char *line, char *dest, int *i)

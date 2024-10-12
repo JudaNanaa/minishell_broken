@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 01:24:09 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 09:33:56 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_err(char *token)
 	else
 		ft_putstr_fd("newline", STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
-	data->status = 1;
+	data->status = 2;
 	return (EXIT_FAILURE);
 }
 
@@ -103,6 +103,12 @@ int add_redirections(t_token *redir, t_queue *queue)
 	
 	if (redir->next == NULL)
 		return (parse_err(NULL), EXIT_FAILURE);
+	if (is_redirection_type(redir->next->type))
+	{
+		if (redir->next->next)
+			return (parse_err(redir->next->content), EXIT_FAILURE);
+		return (parse_err(NULL), EXIT_FAILURE);
+	}
 	if (redir->next->type == SUBSHELL)
 		return (parse_err("("), EXIT_FAILURE);
 	new = ft_malloc(sizeof(t_file));

@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 01:55:47 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 10:03:53 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,16 @@ int	open_heredoc(t_file *file)
 	}
 	if (file->heredoc_content != NULL)
 	{
-		while (file->heredoc_content[++i])
-			ft_putendl_fd(expand_line(file->heredoc_content[i]), fd[1]);
+		if (file->expand_heredoc == true)
+		{
+			while (file->heredoc_content[++i])
+				ft_putendl_fd(expand_line(file->heredoc_content[i]), fd[1]);
+		}
+		else
+		{
+			while (file->heredoc_content[++i])
+				ft_putendl_fd(file->heredoc_content[i], fd[1]);
+		}
 	}
 	close(fd[1]);
 	ft_dup2(fd[0], STDIN_FILENO);
