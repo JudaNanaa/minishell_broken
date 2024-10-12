@@ -17,6 +17,9 @@
 #include "../data/data.h"
 
 // Before Parsing
+# define NEWLINE1 "\n"
+# define SPACE1 " "
+# define SEMICOLON "; "
 # define S_U_EOF "minishell: unexpected EOF while looking for matching `''"
 # define D_U_EOF "minishell: unexpected EOF while looking for matching `\"'"
 
@@ -24,6 +27,7 @@ char	*check_if_command_line_is_good(t_data *data, char *str);
 
 # define false 0
 # define true 1
+
 
 typedef enum
 {

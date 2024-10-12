@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 17:59:50 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 18:53:09 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,10 @@ void subshell_routine(t_data *data, char *command_line)
 
 	set_signal_parent();
 	queue.first = lexer(data, command_line);
+	if (queue.first == NULL)
+		free_and_exit(data->status);
 	if (parser(&queue) == EXIT_FAILURE)
-		return;
+		free_and_exit(data->status);
 	// queue.first = create_ast(queue.first, 0);
 	queue.first = create_ast_test(queue.first);
 	ft_free(command_line);
@@ -85,6 +87,8 @@ void subshell_routine(t_data *data, char *command_line)
 	replace_aliases(queue.first);
 	// print_AST_test(queue.first);
 	start_exec(queue.first);
+	free_and_exit(data->status);
+
 }
 
 void loop_minishell(t_data *data)
@@ -95,7 +99,7 @@ void loop_minishell(t_data *data)
 	while (true)
 	{
 		set_signal_parent();
-		// clear_garbage();
+		clear_garbage();
 		command_line = ft_readline(data);
 		queue.first = lexer(data, command_line);
 		if (queue.first == NULL)
@@ -109,6 +113,5 @@ void loop_minishell(t_data *data)
 		replace_aliases(queue.first);
 		// print_AST_test(queue.first);
 		start_exec(queue.first);
-		clear_garbage();
 	}
 }

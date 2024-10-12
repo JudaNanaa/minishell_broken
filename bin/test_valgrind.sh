@@ -138,7 +138,7 @@ for cmd in "${commands[@]}"; do
   echo -e "${BLUE}Testing: $cmd${NC}"
 
   # Exécuter la commande avec Valgrind sur Minishell pour détecter les fuites
-  valgrind_output=$(valgrind --leak-check=full --quiet --log-file=valgrind_output.txt $MINISHELL -c "$cmd")
+  valgrind_output=$(valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --quiet --log-file=valgrind_output.txt $MINISHELL -c "$cmd")
 
   # Lire la sortie Valgrind depuis le fichier de log
   if grep -q "definitely lost" valgrind_output.txt; then
