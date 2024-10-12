@@ -175,6 +175,7 @@ void	expand_cmd(t_token *cmd)
 	char *arg;
 	char *check;
 
+
 	if (cmd->args == NULL)
 		return ;
 	i = -1;
@@ -182,12 +183,10 @@ void	expand_cmd(t_token *cmd)
 	while (cmd->args[++i] != NULL)
 	{
 		check = ft_strdup(cmd->args[i]);
-		remove_quotes(check);
 		arg = expand_if_necessary(cmd->args[i]);
-		if (ft_strcmp(arg, "") != 0 || ft_strcmp(arg, check) == 0)
-		{
-			cmd->args[j++] = arg;
-		}
+		if (arg[0] == '\0' && !is_a_quotes(check[ft_strlen(check) - 1]))
+			continue;
+		cmd->args[j++] = arg;
 		ft_free(check);
 	}
 	cmd->args[j] = NULL;
