@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 20:00:34 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/09 00:36:36 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 10:41:09 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	if_sigint(int sig)
 	rl_done = 1;
 }
 
-void	set_status_if_signal(t_data *info)
+void	set_status_if_signal(t_data *data)
 {
-	info->status = g_signal;
+	data->status = g_signal;
 	g_signal = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:42:23 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 22:50:00 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 11:00:36 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,10 @@ char	*add_arrow(void)
 {
 	char	*color;
 	char	*arrow;
-
-	if (get_data(NULL, GET)->status == EXIT_SUCCESS)
+	t_data	*data;
+	
+	data = get_data(NULL, GET);
+	if (data->status == 0)
 		color = "\001\033[32;5m\002";
 	else
 		color = "\001\033[31;5m\002";

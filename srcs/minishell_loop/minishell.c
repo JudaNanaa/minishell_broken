@@ -6,12 +6,13 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 10:09:14 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 10:59:03 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
 #include <readline/readline.h>
+#include <stdio.h>
 
 #include "../features/features.h"
 char	*minishell_prompt(void);
@@ -92,7 +93,7 @@ void loop_minishell(t_data *data)
 	
 	while (true)
 	{
-		// set_signal_parent();
+		set_signal_parent();
 		// clear_garbage();
 		command_line = ft_readline(data);
 		queue.first = lexer(data, command_line);
