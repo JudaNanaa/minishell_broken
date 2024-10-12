@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 19:55:37 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 21:01:05 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,20 @@ void	add_elem(t_queue *queue, char *str, int *i)
 		add_token(queue, str, i);
 }
 
+int only_whitespace(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (is_space(str[i]) == false)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 t_token *lexer(t_data *data, char *command_line)
 {
 	int			i;
@@ -257,6 +271,11 @@ t_token *lexer(t_data *data, char *command_line)
 		return (ft_addhistory(tmp), NULL);
 	ft_free(tmp);
 	ft_addhistory(command_line);
+	if (data->is_child == true && only_whitespace(command_line) == true)
+	{
+		parse_err(")");
+		free_and_exit(2);
+	}
 	while (command_line[i])
 	{
 		skip_white_space(command_line, &i);

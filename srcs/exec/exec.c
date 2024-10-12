@@ -173,6 +173,7 @@ void	expand_cmd(t_token *cmd)
 	int	i;
 	int j;
 	char *arg;
+	char *check;
 
 	if (cmd->args == NULL)
 		return ;
@@ -180,11 +181,14 @@ void	expand_cmd(t_token *cmd)
 	j = 0;
 	while (cmd->args[++i] != NULL)
 	{
+		check = ft_strdup(cmd->args[i]);
+		remove_quotes(check);
 		arg = expand_if_necessary(cmd->args[i]);
-		if (ft_strcmp(arg, "") != 0)
+		if (ft_strcmp(arg, "") != 0 || ft_strcmp(arg, check) == 0)
 		{
 			cmd->args[j++] = arg;
 		}
+		ft_free(check);
 	}
 	cmd->args[j] = NULL;
 }

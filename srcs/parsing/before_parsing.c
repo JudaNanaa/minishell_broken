@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:26:16 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 19:28:04 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 20:52:42 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ char	*check_last_token(char *str, int *i)
 	int len;
 
 	split = ft_split(str, " \t");
+	if (split[0] == NULL)
+		return (*i = 1, str);
 	len  = ft_strlen_2d(split);
 	if (ft_strcmp(split[len - 1], "|") == 0 && ft_strcmp(split[0], "|") != 0)
 	{

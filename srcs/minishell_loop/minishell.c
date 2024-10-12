@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 18:53:09 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 20:39:23 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	*ft_readline(t_data *data)
 	while (1)
 	{
 		prompt = minishell_prompt();
-		// prompt = get_prompt(data);
 		command_line = readline(prompt);
 		ft_free(prompt);
 		if (g_signal != 0)

@@ -98,5 +98,6 @@ void	continue_until_find(int i, int *j, char *str, char to_find);
 int	is_a_quotes(char c);
 int is_redirection_type(t_type type);
 int is_operator_type(t_type type);
+int remove_quotes(char *str);
 
 #endif
