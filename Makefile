@@ -89,7 +89,6 @@ $(GARBAGE) :
 
 $(NAME) : message $(OBJS)
 	@$(CC) $(C_FLAGS) $(OBJS) srcs/garbage_collector/garbage_collector.a -L ./libft -lft -lreadline -o $@
-	@cp ./minishell /tmp
 	@echo
 	@echo "💻$(BLUE)executable created >_$(END)✅"
 

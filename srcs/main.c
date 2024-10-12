@@ -9,7 +9,6 @@ volatile sig_atomic_t	g_signal = 0;
 int	init_aliases(void);
 void	init_history(void);
 
-
 t_data *get_data(t_data *data, int flag)
 {
 	static t_data *save;

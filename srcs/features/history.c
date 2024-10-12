@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:23:33 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/12 00:13:43 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/12 16:57:21 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	init_history(void)
 
 	fd = open(HISTORY_FILE, O_RDONLY);
 	if (fd == -1)
-		return ;
+		return (perror("init history"));
 	str = get_next_line(fd);
 	if (str == NULL)
 		return ((void)close(fd));
 	str = ft_strtrim(str, "\n");
 	add_and_save(str);
-	while (str != NULL && str[0] != '\0')
+	while (str != NULL)
 	{
 		ft_free(str);
 		str = get_next_line(fd);

@@ -6,11 +6,12 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:42:23 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/12 11:00:36 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 16:06:23 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "features.h"
+// #include <cstddef>
 
 char	*minishell_prompt(void)
 {
@@ -104,7 +105,7 @@ char	*add_arrow(void)
 	char	*color;
 	char	*arrow;
 	t_data	*data;
-	
+
 	data = get_data(NULL, GET);
 	if (data->status == 0)
 		color = "\001\033[32;5m\002";

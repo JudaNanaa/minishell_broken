@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 09:33:56 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 17:09:30 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 #include "../../includes/includes.h"
 #include "parsing.h"
+#include <readline/history.h>
 #include <unistd.h>
 
 int	parse_err(char *token)
@@ -118,7 +119,7 @@ int add_redirections(t_token *redir, t_queue *queue)
 	new->path = redir->next->content;
 	new->heredoc_content = NULL;
 	new->next = NULL;
-	if (new->mode == HEREDOC)
+	if (new->mode == HEREDOC || new->mode == HERESTRING)
 	{
 		if (get_heredoc(new) == EXIT_FAILURE)
 			return (EXIT_FAILURE);

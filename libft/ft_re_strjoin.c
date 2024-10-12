@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 22:34:20 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 05:26:19 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 18:25:35 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*ft_re_strjoin(const char *s1, const char *s2)
 	str = ft_malloc(sizeof(char) * (len + 1));
 	if (!str)
 	{
+		handle_malloc_error("ft_re_strjoin");
 		ft_free((void *)s1);
 		return (NULL);
 	}

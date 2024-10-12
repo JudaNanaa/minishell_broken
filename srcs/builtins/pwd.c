@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:16:53 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 18:15:30 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 16:09:11 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ char	*ft_pwd(int cas, t_data *info)
 	if (cas == PRINT)
 		(ft_printf("%s\n", buffer), ft_free(buffer));
 	else if (cas == GET)
-		return (info->status = 0, buffer);
+		return (buffer);
 	return (info->status = 0, buffer);
 }

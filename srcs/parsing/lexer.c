@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 00:45:21 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 17:21:18 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_addhistory(char	*str);
 int is_redirection_type(t_type type)
 {
 	if (type == HEREDOC || type == INFILE || type == OUT_APP
-		|| type == OUT_TRUNC)
+		|| type == OUT_TRUNC || type == HERESTRING)
 		return (1);
 	return (0);
 }
@@ -100,9 +100,11 @@ void add_queue_subshell(t_queue *queue, char *str, int *i)
 		if (open_parenthesis - close_parenthesis == 0)
 			break ;
 	}
-	if (!str[*i + j] && open_parenthesis - close_parenthesis != 0)
+	if (!str[*i + j] && open_parenthesis -  close_parenthesis!= 0)
 	{
 		(*i += j);
+		parse_err(")");
+		queue->last = NULL;
 		return;
 	}
 	cmd = ft_substr(str, *i + 1, j - 1);
@@ -138,24 +140,65 @@ int add_token(t_queue *queue, char *str, int *i)
 	return (1);
 }
 
+int check_pipe(char *token)
+{
+	if (ft_strcmp(token, "|") == 0)
+		return (PIPE);
+	if (ft_strcmp(token, "||") == 0)
+		return (OR);
+	parse_err("||");
+	return (U_TOKEN);	
+}
+
+int check_outfile(char *token)
+{
+	if (ft_strcmp(token, ">") == 0)
+		return (OUT_TRUNC);
+	if (ft_strcmp(token, ">>") == 0)
+		return (OUT_APP);
+	parse_err(">>");
+	return (U_TOKEN);
+}
+
+int check_and(char *token)
+{
+	if (ft_strcmp(token, "&&") == 0)
+		return (AND);
+	if (ft_strcmp(token, "&") == 0)
+		parse_err("&");
+	else
+		parse_err("&&");
+	return (U_TOKEN);
+}
+
+int check_infile(char *token)
+{
+	if (ft_strcmp(token, "<") == 0)
+		return (INFILE);
+	if (ft_strcmp(token, "<<") == 0)
+		return (HEREDOC);
+	if (ft_strcmp(token, "<<<") == 0)
+		return (HERESTRING);
+	parse_err("<<<");
+	return (U_TOKEN);		
+}
+
 int	assigne_type(char *redirection)
 {
-	if (!ft_strcmp(redirection, "|"))
-		return (PIPE);
-	if (!ft_strcmp(redirection, "||"))
-		return (OR);
-	if (!ft_strcmp(redirection, ">"))
-		return (OUT_TRUNC);
-	if (!ft_strcmp(redirection, ">>"))
-		return (OUT_APP);
-	if (!ft_strcmp(redirection, "<"))
-		return (INFILE);
-	if (!ft_strcmp(redirection, "<<"))
-		return (HEREDOC);
-	if (!ft_strcmp(redirection, "&&"))
-		return (AND);
-	if (!ft_strcmp(redirection, ";") || !ft_strcmp(redirection, "\n"))
+	if (ft_strncmp(redirection, "|", 1) == 0)
+		return (check_pipe(redirection));
+	if (ft_strncmp(redirection, ">", 1) == 0)
+		return (check_outfile(redirection));
+	if (ft_strncmp(redirection, "<", 1) == 0)
+		return (check_infile(redirection));
+	if (ft_strncmp(redirection, "&", 1) == 0)
+		return (check_and(redirection));
+	if (ft_strncmp(redirection, "\n", 1) == 0)
 		return (LIST);
+	if (ft_strcmp(redirection, ";") == 0)
+		return (LIST);
+	else
+		parse_err(";;");
 	return (U_TOKEN);
 }
 
@@ -178,6 +221,11 @@ void add_metachars(t_queue *queue, char *str, int *i)
 		redirection[j] = str[*i + j];
 	redirection[j] = '\0';
 	type = assigne_type(redirection);
+	if (type == U_TOKEN)
+	{
+		queue->last = NULL;
+		return ;
+	}
 	add_to_queue(queue, redirection, type);
 	*i += j;
 }
@@ -214,6 +262,8 @@ t_token *lexer(t_data *data, char *command_line)
 		skip_white_space(command_line, &i);
 		if (command_line[i])
 			add_elem(&queue, command_line, &i);
+		if (queue.last == NULL)
+			return (NULL);
 	}
 	return (queue.first);
 }

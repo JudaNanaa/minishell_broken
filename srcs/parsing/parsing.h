@@ -34,6 +34,7 @@ typedef enum
 	OR,
 	LIST,
 	HEREDOC,
+	HERESTRING,
 	INFILE,
 	OUT_APP,
 	OUT_TRUNC,
@@ -78,6 +79,7 @@ t_token *lexer(t_data *data, char *command_line);
 
 // Parser
 int	parser(t_queue *queue);
+int	parse_err(char *token);
 
 
 // Ast

@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 10:59:03 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 17:59:50 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*ft_readline(t_data *data)
 	while (1)
 	{
 		prompt = minishell_prompt();
+		// prompt = get_prompt(data);
 		command_line = readline(prompt);
 		ft_free(prompt);
 		if (g_signal != 0)
@@ -97,6 +98,8 @@ void loop_minishell(t_data *data)
 		// clear_garbage();
 		command_line = ft_readline(data);
 		queue.first = lexer(data, command_line);
+		if (queue.first == NULL)
+			continue;
 		if (parser(&queue) == EXIT_FAILURE)
 			continue;
 		// queue.first = create_ast(queue.first, 0);

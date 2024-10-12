@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:28:02 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/12 10:19:26 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 17:14:14 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ void	ctrl_D_mssg(int i, char *eof)
 	ft_fprintf(STDERR_FILENO, "delimited by end-of-file (wanted `%s')\n", eof);
 }
 
+int	get_herestr(t_file *new)
+{
+	if (new->path[0] == '\'' && new->path[ft_strlen(new->path) - 1] == '\'')
+		new->expand_heredoc = false;
+	else
+	 	new->expand_heredoc = true;
+	remove_quotes(new->path);
+	add_string_char_2d(&new->heredoc_content, new->path);
+	return (EXIT_SUCCESS);
+}
+
 int	get_heredoc(t_file *new)
 {
 	char	*input;
@@ -30,6 +41,8 @@ int	get_heredoc(t_file *new)
 
 	i = 0;
 	data = get_data(NULL, GET);
+	if (new->mode == HERESTRING)
+		return (get_herestr(new));
 	new->expand_heredoc = remove_quotes(new->path);
 	while (++i)
 	{

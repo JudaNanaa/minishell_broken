@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 00:56:49 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 15:10:10 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/12 15:48:29 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_token	*add_next_pyramid(t_token *left, t_token *operator, int weight)
 		operator->right = operator->next;
 	}
 	operator->right->prev = operator;
-	(void)add_next_pyramid(operator, next_operator(operator), weight);
+	add_next_pyramid(operator, next_operator(operator), weight);
 	return (operator);
 }
 
@@ -85,6 +85,6 @@ t_token *create_ast(t_token *first, int weight)
 {
 	if (first->next == NULL)
 		return (first);
-	(void)add_next_pyramid(first, first->next, weight);
+	add_next_pyramid(first, first->next, weight);
 	return (ast_top(first));
 }

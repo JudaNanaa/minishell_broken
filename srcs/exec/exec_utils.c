@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 10:03:53 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 17:15:20 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int open_files(t_token *node)
 	{
 		if (files->mode == INFILE)
 			result = open_infile(files);
-		else if (files->mode == HEREDOC)
+		else if (files->mode == HEREDOC || files->mode == HERESTRING)
 			result = open_heredoc(files);
 		else if (files->mode == OUT_TRUNC)
 			result = open_outfile(files, O_TRUNC);
