@@ -115,7 +115,7 @@ message :
 	@echo "$(BLUE)🔩compiling minishell🔩$(END)"
 	
 leak : all
-	@valgrind --leak-check=full --show-below-main=no --show-leak-kinds=all --track-fds=yes --suppressions=.supp.supp ./minishell
+	@valgrind --leak-check=full --show-below-main=no --show-leak-kinds=all --track-fds=yes    --trace-children=yes --suppressions=.supp.supp ./minishell
 
 push:
 	@python3 -m c_formatter_42 $(addprefix $(SRCS_DIR), main.c $(PARSING) $(PROMPT) $(SIGNALS) \

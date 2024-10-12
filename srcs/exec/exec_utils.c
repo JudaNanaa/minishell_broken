@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 17:15:20 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 19:34:32 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,14 +316,20 @@ void exec_or(t_token *node)
 
 void exec_list(t_token *node)
 {
-	if (check_if_fork(node->left))
-		fork_and_exec(node->left);
-	else
-		exec(node->left);
-	if (check_if_fork(node->right))
-		fork_and_exec(node->right);
-	else
-		exec(node->right);
+	if (node->left)
+	{
+		if (check_if_fork(node->left))
+			fork_and_exec(node->left);
+		else
+			exec(node->left);
+	}
+	if (node->right)
+	{
+		if (check_if_fork(node->right))
+			fork_and_exec(node->right);
+		else
+			exec(node->right);
+	}
 }
 
 

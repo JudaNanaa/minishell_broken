@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:26:16 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 19:21:40 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 19:28:04 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 #include <readline/chardefs.h>
 #include <unistd.h>
 
-char	*quote_or_dquote(char *str, char *prompt, t_data *data, char *flag)
+char	*get_open_input(char *str, char *prompt, char *flag)
 {
 	char	*new_line;
+	t_data	*data;
 
+	data = get_data(NULL, GET);
 	new_line = readline(prompt);
 	if (!new_line)
 	{
@@ -37,37 +39,36 @@ char	*quote_or_dquote(char *str, char *prompt, t_data *data, char *flag)
 	}
 	str = ft_re_strjoin(str, flag);
 	str = ft_re_strjoin(str, new_line);
-	free(new_line);
-	return (str);
+	return (free(new_line), str);
 }
 
-char	*check_if_dquote_close(char *str, int *i, t_data *data)
+char	*check_if_dquote_close(char *str, int *i)
 {
 	(*i)++;
 	while (str[*i] && str[*i] != '"')
 		(*i)++;
 	if (str[*i] == '\0')
 	{
-		str = quote_or_dquote(str, "dquote> ", data, NEWLINE1);
+		str = get_open_input(str, "dquote> ", NEWLINE1);
 		*i = -1;
 	}
 	return (str);
 }
 
-char	*check_if_quote_close(char *str, int *i, t_data *data)
+char	*check_if_quote_close(char *str, int *i)
 {
 	(*i)++;
 	while (str[*i] && str[*i] != '\'')
 		(*i)++;
 	if (str[*i] == '\0')
 	{
-		str = quote_or_dquote(str, "quote> ", data, NEWLINE1);
+		str = get_open_input(str, "quote> ", NEWLINE1);
 		*i = -1;
 	}
 	return (str);
 }
 
-char	*check_last_token(char *str, int *i, t_data *data)
+char	*check_last_token(char *str, int *i)
 {
 	char **split;
 	int len;
@@ -76,23 +77,23 @@ char	*check_last_token(char *str, int *i, t_data *data)
 	len  = ft_strlen_2d(split);
 	if (ft_strcmp(split[len - 1], "|") == 0 && ft_strcmp(split[0], "|") != 0)
 	{
-		str = quote_or_dquote(str, "pipe> ", data, SPACE1);
+		str = get_open_input(str, "pipe> ", SPACE1);
 		*i = 0;
 	}
 	if (ft_strcmp(split[len - 1], "||") == 0 && ft_strcmp(split[0], "||") != 0)
 	{
-		str = quote_or_dquote(str, "or> ", data, SPACE1);
+		str = get_open_input(str, "or> ", SPACE1);
 		*i = 0;
 	}
 	if (ft_strcmp(split[len - 1], "&&") == 0 && ft_strcmp(split[0], "&&") != 0)
 	{
-		str = quote_or_dquote(str, "and> ", data, SPACE1);
+		str = get_open_input(str, "and> ", SPACE1);
 		*i = 0;
 	}
 	return (str);
 }
 
-char	*check_if_paranthesis_close(char *str, int i, t_data *data)
+char	*check_if_paranthesis_close(char *str, int i)
 {
 	int	open_parenthesis;
 	int	close_parenthesis;
@@ -114,8 +115,8 @@ char	*check_if_paranthesis_close(char *str, int i, t_data *data)
 		return (NULL);
 	if (open_parenthesis == close_parenthesis)
 		return (str);
-	str = quote_or_dquote(str, "subshell> ", data, SEMICOLON);
-	return (check_if_paranthesis_close(str, -1, data));
+	str = get_open_input(str, "subshell> ", SEMICOLON);
+	return (check_if_paranthesis_close(str, -1));
 }
 
 char	*check_if_command_line_is_good(t_data *data, char *str)
@@ -128,15 +129,15 @@ char	*check_if_command_line_is_good(t_data *data, char *str)
 		while (g_signal == 0 && str[i])
 		{
 			if (g_signal == 0 && str[i] == '"')
-				str = check_if_dquote_close(str, &i, data);
+				str = check_if_dquote_close(str, &i);
 			else if (g_signal == 0 && str[i] == '\'')
-				str = check_if_quote_close(str, &i, data);
+				str = check_if_quote_close(str, &i);
 			i++;
 		}
 		if (!str[i])
-			str = check_last_token(str, &i, data);
+			str = check_last_token(str, &i);
 	}
 	if (g_signal != 0)
 		return (set_status_if_signal(data), NULL);
-	return (check_if_paranthesis_close(str, -1, data));
+	return (check_if_paranthesis_close(str, -1));
 }
