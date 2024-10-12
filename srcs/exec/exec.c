@@ -85,8 +85,7 @@ void exec_cmd(t_token *node)
 
 	data = get_data(NULL, GET);
 	open_files(node);
-	envp = t_env_to_envp(data->env, GLOBAL);
-	if (ft_strcmp(node->args[0], ":") == 0)
+	if (node->args[0] == NULL||ft_strcmp(node->args[0], ":") == 0)
 		free_and_exit(EXIT_SUCCESS);
 	if (ft_strcmp(node->args[0], "!") == 0)
 		free_and_exit(EXIT_FAILURE);
@@ -96,9 +95,10 @@ void exec_cmd(t_token *node)
 		ft_fprintf(2, "%s: %s: command not found\n", data->name, node->args[0]);
 		free_and_exit(127);
 	}
-	if (!ft_strcmp(node->args[0], "ls") || !ft_strcmp(node->args[0], "grep"))
-		add_string_char_2d(&node->args, ft_strdup("--color=auto"));
+	envp = t_env_to_envp(data->env, GLOBAL);
 	execve(path, node->args, envp);
+	ft_fprintf(STDERR_FILENO, "Error execve\n");
+	free_and_exit(-1);
 }
 
 void exec_subshell(t_token *node)
@@ -156,17 +156,37 @@ void exec_builtin(t_token *node)
 	(close(save_stdin), close(save_stdout));
 }
 
+void printf_2d_array(char **to_print)
+{
+	int i;
+
+	i = 0;
+	while (to_print[i])
+	{
+		ft_printf("%s\n", to_print[i]);
+		i++;
+	}
+}
+
 void	expand_cmd(t_token *cmd)
 {
 	int	i;
+	int j;
+	char *arg;
 
 	if (cmd->args == NULL)
 		return ;
 	i = -1;
+	j = 0;
 	while (cmd->args[++i] != NULL)
 	{
-		cmd->args[i] = expand_if_necessary(cmd->args[i]);
+		arg = expand_if_necessary(cmd->args[i]);
+		if (ft_strcmp(arg, "") != 0)
+		{
+			cmd->args[j++] = arg;
+		}
 	}
+	cmd->args[j] = NULL;
 }
 
 void exec(t_token *current)

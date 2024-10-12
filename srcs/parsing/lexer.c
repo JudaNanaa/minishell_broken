@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 17:21:18 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 19:55:37 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ void add_queue_subshell(t_queue *queue, char *str, int *i)
 		if (str[*i + j] == '(')
 			open_parenthesis++;
 		if (str[*i + j] == '"')
-			continue_until_find(i, &j, str, '"');
+			continue_until_find(*i, &j, str, '"');
 		if (str[*i + j] == '\'')
-			continue_until_find(i, &j, str, '\'');
+			continue_until_find(*i, &j, str, '\'');
 		if (str[*i + j] == ')')
 			close_parenthesis++;
 		if (open_parenthesis - close_parenthesis == 0)
@@ -123,11 +123,11 @@ int add_token(t_queue *queue, char *str, int *i)
 	while (str[*i + j] && !is_space(str[*i + j]) && !is_a_separator(str[*i + j]))
 	{
 		if (str[*i + j] == '"')
-			continue_until_find(i, &j, str, '"');
+			continue_until_find(*i, &j, str, '"');
 		else if (str[*i + j] == '\'')
-			continue_until_find(i, &j, str, '\'');
+			continue_until_find(*i, &j, str, '\'');
 		else if (str[*i + j] == '{')
-			continue_until_find(i, &j, str, '}');
+			continue_until_find(*i, &j, str, '}');
 		j++;
 	}
 	cmd = ft_substr(str, *i, j);

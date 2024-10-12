@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 19:34:32 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 20:25:34 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,8 @@ int ft_fork(void)
 
 int	check_built_in(char *command)
 {
+	if (command == NULL)
+		return (0);
 	if (ft_strcmp(command, "export") == 0)
 		return (1);
 	else if (ft_strcmp(command, "env") == 0)

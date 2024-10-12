@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 17:09:30 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/12 19:51:10 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,8 +177,8 @@ int	fill_queue(t_token *current, t_queue *queue)
 			{
 				if (add_redirections(current, queue) == EXIT_FAILURE)
 					return (EXIT_FAILURE);
-				queue->last->next = NULL;
 				current = current->next->next;
+				queue->last->next = NULL;
 				continue;
 			}
 			else if (current->type == CMD)
