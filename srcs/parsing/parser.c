@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 22:28:32 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/12 01:24:09 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,7 @@ void set_command_args(t_token *current)
 	}
 	current->args = ft_malloc(sizeof(char *) * (len + 1));
 	if (current->args == NULL)
-	{
-		// TODO: Handle error malloc
-	}
+		handle_malloc_error("parsing");
 	tmp = current;
 	len = 0;
 	while (tmp && is_operator_type(tmp->type) == false)
@@ -158,8 +156,6 @@ int	add_subshell(t_token *subshell, t_queue *queue)
 	queue->last->type = SUBSHELL;
 	return (EXIT_SUCCESS);
 }
-
-
 
 int	fill_queue(t_token *current, t_queue *queue)
 {

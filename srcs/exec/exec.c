@@ -119,17 +119,17 @@ void do_builtin(t_token *node)
 	t_data *data;
 
 	data = get_data(NULL,GET);
-	if (ft_strcmp(node->content, "export") == 0)
+	if (ft_strcmp(node->args[0], "export") == 0)
 		data->status = ft_export(data, node->args);
-	if (ft_strcmp(node->content, "env") == 0)
+	if (ft_strcmp(node->args[0], "env") == 0)
 		print_env(data->env, 1, data);
-	if (ft_strcmp(node->content, "pwd") == 0)
+	if (ft_strcmp(node->args[0], "pwd") == 0)
 		ft_pwd(PRINT, data);
-	if (ft_strcmp(node->content, "echo") == 0)
+	if (ft_strcmp(node->args[0], "echo") == 0)
 		ft_echo(node->args, data);
-	if (ft_strcmp(node->content, "unset") == 0)
+	if (ft_strcmp(node->args[0], "unset") == 0)
 		ft_unset(node->args, data);
-	if (ft_strcmp(node->content, "cd") == 0)
+	if (ft_strcmp(node->args[0], "cd") == 0)
 		data->status = ft_cd(node->args[1]);
 }
 
@@ -142,7 +142,7 @@ void exec_builtin(t_token *node)
 	save_stdout = dup(STDOUT_FILENO);
 	if (open_files(node) == EXIT_FAILURE)
 		return;
-	if (ft_strcmp(node->content, "exit") == 0)
+	if (ft_strcmp(node->args[0], "exit") == 0)
 	{
 		(dup2(save_stdin, STDIN_FILENO), dup2(save_stdout, STDOUT_FILENO));
 		(close(save_stdin), close(save_stdout));
@@ -202,7 +202,7 @@ void exec(t_token *current)
 	if (current->type == CMD)
 	{
 		expand_cmd(current);
-		if (check_built_in(current->content))
+		if (check_built_in(current->args[0]))
 			exec_builtin(current);
 		else
 			exec_cmd(current);
@@ -303,7 +303,7 @@ void start_exec(t_token *node)
 	set_exec(data, &term);
 	if (data->is_child == false)
 		set_signal_parent_exec();
-	if ((node->type == CMD && check_built_in(node->content) == false)
+	if ((node->type == CMD && check_built_in(node->args[0]) == false)
 		|| node->type == SUBSHELL)
 			single_command(node);
 	else

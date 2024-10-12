@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 22:29:48 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/12 01:55:47 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,32 @@ void ft_dup2(int newfd, int oldfd)
 	}
 }
 
+int expand_file_path(t_file *file)
+{
+	char *path;
+	t_data *data;
+
+	data = get_data(NULL, GET);
+	path = expand_if_necessary(ft_strdup(file->path));
+	if (path[0] == '\0')
+	{
+		ft_fprintf(2, "%s: %s: ambiguous redirect\n", data->name, file->path);
+		if (data->is_child == true)
+			free_and_exit(1);
+		return (EXIT_FAILURE);
+	}
+	file->path = path;
+	return (EXIT_SUCCESS);
+}
+
 int open_infile(t_file *file)
 {
 	int infile;
 	t_data *data;
 
 	data = get_data(NULL, GET);
+	if (expand_file_path(file) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	infile = open(file->path, O_RDONLY);
 	if (infile == -1)
 	{
@@ -65,6 +85,8 @@ int open_outfile(t_file *file, int open_mode)
 	t_data *data;
 
 	data = get_data(NULL, GET);
+	if (expand_file_path(file) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	outfile = open(file->path, O_WRONLY | O_CREAT | open_mode, 0644);
 	if (outfile == -1)
 	{
@@ -169,9 +191,7 @@ int ft_fork(void)
 	data = get_data(NULL, GET);
 	pid = fork();
 	if (pid == -1)
-	{
-		// TODO: Print error and exit
-	}
+		free_and_exit(-1);
 	if (pid == 0)
 	{
 		data->is_child = YES;
@@ -207,9 +227,7 @@ void exec_pipe(t_token *node)
 	int status;
 	
 	if (pipe(fd) == -1)
-	{
-		// TODO: PRINT error and exit
-	}
+		free_and_exit(-1);
 	pid[0] = ft_fork();
 	if (pid[0] == 0)
 	{
