@@ -47,9 +47,11 @@ FEATURES = $(addprefix features/, alias_utils.c aliases.c history.c prompt_utils
 
 UTILS = $(addprefix utils/, utils.c)
 
+WILDCARDS = $(addprefix wildcard/, wildcard.c wildcard_utils.c)
+
 OBJS_DIR = .objets/
 
-SRCS = main.c tests_utils.c $(PARSING) $(MINISHELL) $(SIGNALS) $(AST) $(ERROR) $(ENV) $(UTILS) $(BUILTINS) $(EXEC) $(FEATURES)
+SRCS = main.c tests_utils.c $(PARSING) $(MINISHELL) $(SIGNALS) $(AST) $(ERROR) $(ENV) $(UTILS) $(BUILTINS) $(EXEC) $(FEATURES) $(WILDCARDS)
 
 SRCS := $(SRCS:%=$(SRCS_DIR)/%)
 
@@ -91,6 +93,7 @@ $(NAME) : message $(OBJS)
 	@$(CC) $(C_FLAGS) $(OBJS) srcs/garbage_collector/garbage_collector.a -L ./libft -lft -lreadline -o $@
 	@echo
 	@echo "💻$(BLUE)executable created >_$(END)✅"
+	@echo
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 	@$(DIR_DUP)

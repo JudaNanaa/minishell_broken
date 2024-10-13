@@ -43,22 +43,3 @@ void subminishell(t_data *data, char **argv)
 		data->name = argv[3];
 	subshell_routine(data, argv[2]);
 }
-
-int main(int argc, char **argv, char **envp)
-{
-	t_data data;
-
-	get_data(&data, SET);
-	data.name = "minishell";
-	data.status = 0;
-	data.env = NULL;
-	data.env = env_in_struct(envp);
-	set_pwd_and_shlvl(&data);
-	init_history();
-	init_aliases();
-	if (argc == 1)
-		minishell(&data);
-	else
-		subminishell(&data, argv);
-	return (data.status);
-}

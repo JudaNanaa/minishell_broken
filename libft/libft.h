@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 21:47:05 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/10 04:47:50 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 00:15:19 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,17 @@ typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}					t_list;
+}	t_list;
 
+void				sort_str2d(char **str);
 int					count_char(char *str, char char_to_count);
 char				*ft_re_strdup(const char *src);
 char				*ft_re_strjoin(const char *s1, const char *s2);
+char				**str2d_join(char **str1, char **str2);
+char				**re_str2djoin(char **str1, char **str2);
+char				*str_join_2d(char **str_2d, char *sep);
+char				*str_join_2d_and_free(char **str_2d, char *sep);
+char				**strdup2d(char **str);;
 
 int					ft_atoi(const char *str);
 int					ft_isalpha(int c);

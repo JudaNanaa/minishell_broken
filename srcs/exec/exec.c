@@ -161,6 +161,11 @@ void printf_2d_array(char **to_print)
 	int i;
 
 	i = 0;
+	if (to_print == NULL)
+	{
+		ft_printf("NULL\n");
+		return ;
+	}
 	while (to_print[i])
 	{
 		ft_printf("%s\n", to_print[i]);

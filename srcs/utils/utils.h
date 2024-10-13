@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 16:58:52 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 22:29:44 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/13 20:03:36 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ void	add_string_char_2d(char ***tabb, char *str);
 int		ft_is_numeric(char *nb);
 int		all_char_are_the_same(char *str);
 void	set_pwd_and_shlvl(t_data *info);
+void printf_2d_array(char **to_print);
 
 #endif
