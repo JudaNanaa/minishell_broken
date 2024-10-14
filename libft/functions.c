@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 20:03:40 by madamou           #+#    #+#             */
-/*   Updated: 2024/08/25 15:53:16 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 23:49:16 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,24 @@ char	*ft_decimal(char *print, int nb, int cas)
 		print = ft_strcatt(print, "+");
 	print = ft_strcatt(print, result);
 	return (ft_free(result), print);
+}
+
+char	*read_file(int fd)
+{
+	char	*temp;
+	char	*str;
+
+	temp = get_next_line(fd);
+	if (temp == NULL)
+		return (NULL);
+	str = NULL;
+	while (temp != NULL)
+	{
+		str = ft_re_strjoin(str, temp);
+		ft_free(temp);
+		if (str == NULL)
+			return (NULL);
+		temp = get_next_line(fd);
+	}
+	return (str);
 }

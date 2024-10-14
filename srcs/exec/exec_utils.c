@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 22:06:06 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 23:49:16 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,10 @@ int	check_built_in(char *command)
 	else if (ft_strcmp(command, "exit") == 0)
 		return (1);
 	else if (ft_strcmp(command, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(command, "alias") == 0)
+		return (1);
+	else if (ft_strcmp(command, "source") == 0)
 		return (1);
 	return (0);
 }

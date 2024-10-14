@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:14:17 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/11 00:10:24 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 23:43:12 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**split_first_value(char *str, char sep)
 	j = 0;
 	result = ft_malloc(sizeof(char *) * 3);
 	if (!result)
-		handle_malloc_error("export");
+		handle_malloc_error("split first value");
 	while (str[i] && str[i] != sep)
 		i++;
 	result[0] = ft_substr(str, 0, i);
@@ -32,7 +32,7 @@ char	**split_first_value(char *str, char sep)
 			j++;
 		result[1] = ft_malloc(sizeof(char) * (j + 1));
 		if (!result[1])
-			handle_malloc_error("export");
+			handle_malloc_error("split first value");
 		ft_strcpy(result[1], &str[i + 1]);
 	}
 	else
@@ -97,9 +97,7 @@ int	ft_export(t_data *info, char **content)
 		if (is_a_good_variable(content[i]))
 		{
 			if (add_in_list(info, content[i]) == -1)
-			{
-				// TODO: Handle error malloc
-			}
+				handle_malloc_error("export");
 		}
 		else
 		{

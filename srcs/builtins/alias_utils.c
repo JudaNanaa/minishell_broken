@@ -6,11 +6,11 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:24:38 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/11 00:45:21 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 22:47:14 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "features.h"
+#include "../../includes/includes.h"
 
 void	clear_3d_array(char ***alias, int end)
 {

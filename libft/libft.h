@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 21:47:05 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/14 21:17:42 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 23:49:16 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char				**re_str2djoin(char **str1, char **str2);
 char				*str_join_2d(char **str_2d, char *sep);
 char				*str_join_2d_and_free(char **str_2d, char *sep);
 char				**strdup2d(char **str);;
+char				*read_file(int fd);
 
 int					ft_atoi(const char *str);
 int					ft_isalpha(int c);

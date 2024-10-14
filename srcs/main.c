@@ -3,11 +3,38 @@
 #include "environement/env.h"
 #include "minishell_loop/minishell_loop.h"
 #include "parsing/parsing.h"
+#include <fcntl.h>
 #include <unistd.h>
 
 volatile sig_atomic_t	g_signal = 0;
 int	init_aliases(void);
 void	init_history(void);
+t_token *lexer_alias(t_data *data, char *command_line);
+void	print_AST(t_token *command);
+
+void mshrc(void)
+{
+	t_data *data;
+	t_queue queue;
+	char	*file;
+	int		fd;
+
+	data = get_data(NULL, GET);
+	fd = open(MSHRC, O_RDONLY);
+	if (fd == -1)
+		return;
+	file = read_file(fd);
+	queue.first = lexer_alias(data, file);
+	if (queue.first == NULL)
+		return ;
+	if (parser(&queue) == EXIT_FAILURE)
+			return ;
+	queue.first = create_ast(queue.first, 0);
+	// print_AST(queue.first);
+	ft_free(file);
+	start_exec(queue.first);
+	return ;
+}
 
 t_data *get_data(t_data *data, int flag)
 {
@@ -52,10 +79,12 @@ int main(int argc, char **argv, char **envp)
 	data.name = "minishell";
 	data.status = 0;
 	data.env = NULL;
+	data.alias = NULL;
 	data.env = env_in_struct(envp);
 	set_pwd_and_shlvl(&data);
 	init_history();
-	init_aliases();
+	mshrc();
+	// init_aliases();
 	if (argc == 1)
 		minishell(&data);
 	else

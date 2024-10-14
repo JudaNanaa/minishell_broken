@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:17:37 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 15:46:37 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 23:49:17 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ char	*ft_pwd(int cas, t_data *info);
 void	ft_exit(char **args);
 void	ft_unset(char **args, t_data *info);
 void	print_exit(t_data *data);
+
+
+// Alias
+char	*ft_getalias(char *key);
+int	ft_alias(t_data *data, char **content);
 
 // PWD
 # define PRINT 2

@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 22:14:40 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 23:26:25 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 void	ft_addhistory(char	*str);
 char	*replace_aliases(char *cmd);
+void add_to_queue(t_queue *queue, char *content, t_type type);
+t_token *lexer_alias(t_data *data, char *command_line);
+t_alias	*search_in_alias(char *key);
+char	*ft_getalias(char *key);
 
 int is_redirection_type(t_type type)
 {
@@ -54,17 +58,39 @@ void set_token_type(t_token *current, t_type type)
 		current->type = LOCAL_VAR;
 }
 
-// int	check_aliases()
+int	check_aliases(t_token *token, t_queue *queue)
+{
+	char	*str;
+	t_token	*alias;
+
+	if (token->type != CMD)
+		return (0);
+	str = ft_getalias(token->content);
+	if (str == NULL)
+		return (0);
+	if (token == queue->first)
+		queue->first = NULL;
+	else
+	 	token->prev->next = NULL;
+	queue->last = token->prev;
+	alias = lexer_alias(get_data(NULL, GET), str);
+	if (alias == NULL)
+		return (EXIT_FAILURE);
+	if (queue->last)
+		queue->last->next = alias;
+	else
+	 	queue->first = alias;
+	while (alias->next)
+		alias = alias->next;
+	queue->last = alias;
+	return (0);
+}
 
 void add_to_queue(t_queue *queue, char *content, t_type type)
 {
 	t_token	*token;
 	t_token	*current;
 
-	// if (/* is an CMD */)
-	// {
-	// 	if ()
-	// }
 	token = ft_malloc(sizeof(t_token) * 1);
 	if (token == NULL)
 		handle_malloc_error("add to queue");
@@ -141,10 +167,10 @@ int add_token(t_queue *queue, char *str, int *i)
 	if (!cmd)
 		handle_malloc_error("add token");
 	if (!cmd[0] && !is_a_quotes(str[*i + j - 1]))
-		return (*i += j, 1);
+		return (*i += j, 0);
 	add_to_queue(queue, cmd, CMD);
 	*i += j;
-	return (1);
+	return (0);
 }
 
 int check_pipe(char *token)
@@ -187,7 +213,7 @@ int check_infile(char *token)
 	if (ft_strcmp(token, "<<<") == 0)
 		return (HERESTRING);
 	parse_err("<<<");
-	return (U_TOKEN);		
+	return (U_TOKEN);
 }
 
 int	assigne_type(char *redirection)
@@ -278,6 +304,40 @@ t_token *lexer(t_data *data, char *command_line)
 		return (ft_addhistory(tmp), NULL);
 	ft_free(tmp);
 	ft_addhistory(command_line);
+	if (data->is_child == true && only_whitespace(command_line) == true)
+	{
+		parse_err(")");
+		free_and_exit(2);
+	}
+	while (command_line[i])
+	{
+		skip_white_space(command_line, &i);
+		if (command_line[i])
+		{
+			add_elem(&queue, command_line, &i);
+			if (check_aliases(queue.last, &queue) == EXIT_FAILURE)
+				queue.last = NULL;
+		}
+		if (queue.last == NULL)
+			return (NULL);
+	}
+	return (queue.first);
+}
+
+t_token *lexer_alias(t_data *data, char *command_line)
+{
+	int			i;
+	char		*tmp;
+	t_queue	queue;
+
+	i = 0;
+	queue.first = NULL;
+	queue.last = NULL;
+	tmp = ft_strdup(command_line);
+	command_line = check_if_command_line_is_good(data, command_line);
+	if (!command_line)
+		return (NULL);
+	ft_free(tmp);
 	if (data->is_child == true && only_whitespace(command_line) == true)
 	{
 		parse_err(")");

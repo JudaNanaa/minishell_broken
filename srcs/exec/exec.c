@@ -14,6 +14,8 @@
 #include "../../includes/includes.h"
 #include <unistd.h>
 
+void mshrc(void);
+
 int	ft_access(char *path)
 {
 	int			check_stat;
@@ -129,10 +131,14 @@ void do_builtin(t_token *node)
 	data = get_data(NULL,GET);
 	if (ft_strcmp(node->args[0], "export") == 0)
 		data->status = ft_export(data, node->args);
+	if (ft_strcmp(node->args[0], "alias") == 0)
+		data->status = ft_alias(data, node->args);
 	if (ft_strcmp(node->args[0], "env") == 0)
 		print_env(data->env, 1, data);
 	if (ft_strcmp(node->args[0], "pwd") == 0)
 		ft_pwd(PRINT, data);
+	if (ft_strcmp(node->args[0], "source") == 0)
+		mshrc();
 	if (ft_strcmp(node->args[0], "echo") == 0)
 		ft_echo(node->args, data);
 	if (ft_strcmp(node->args[0], "unset") == 0)

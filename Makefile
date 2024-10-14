@@ -39,11 +39,11 @@ EXEC = $(addprefix exec/, exec.c exec_utils.c)
 
 MINISHELL = $(addprefix minishell_loop/, minishell.c)
 
-BUILTINS = $(addprefix builtins/, env.c cd.c echo.c export.c pwd.c exit.c unset.c)
+BUILTINS = $(addprefix builtins/, alias_utils.c aliases.c env.c cd.c echo.c export.c pwd.c exit.c unset.c alias.c)
 
 ENV = $(addprefix environement/, environement_variables.c environement_variables_utils.c)
 
-FEATURES = $(addprefix features/, alias_utils.c aliases.c history.c prompt_utils.c prompt.c)
+FEATURES = $(addprefix features/, history.c prompt_utils.c prompt.c)
 
 UTILS = $(addprefix utils/, utils.c)
 
