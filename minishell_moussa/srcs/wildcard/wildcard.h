@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 12:03:48 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/13 20:03:18 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 02:56:21 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_wcards
 void				create_node_wcards(t_wcards **wcards, char *str, int i,
 						int j);
 void				skip_quote_wcards(char *str, int i, int *j);
-int					ft_strncmp_reverse(char *s1, char *s2, size_t len_s2);
+int					ft_strncmp_reverse(char *s1, char *s2, int len_s2);
 char **expand_wildcards(char *to_expand);
 
 

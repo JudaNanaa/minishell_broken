@@ -49,14 +49,15 @@ run_test() {
 }
 
 # Load all test files
-source ./bin/test_echo.sh
-source ./bin/test_export.sh
-source ./bin/test_unset.sh
-source ./bin/test_cd.sh
-#source test_env.sh
-#source test_redirect.sh
-source ./bin/test_pipes.sh
-source ./bin/test_too_much.sh
+source ./bin/test_wildcards.sh
+# source ./bin/test_echo.sh
+# source ./bin/test_export.sh
+# source ./bin/test_unset.sh
+# source ./bin/test_cd.sh
+# #source test_env.sh
+# #source test_redirect.sh
+# source ./bin/test_pipes.sh
+# source ./bin/test_too_much.sh
 # Afficher le nombre de tests réussis et échoués
   echo -e "\n\n${YELLOW}=== Resume =================================${NC}"
   echo -e "${BLUE}Résumé des $count_total tests:${NC}"

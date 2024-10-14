@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_moussa.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 14:25:05 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 00:10:25 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/14 02:57:02 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	is_match(char *name, t_wcards *wcards)
 		if (ft_strncmp(name, wcards->content, ft_strlen(wcards->content)) != 0)
 			return (0);
 	}
-	name = name + ft_strlen(wcards->content);
+	name = ft_strdup(name + ft_strlen(wcards->content));
 	wcards = wcards->next;
 	while (wcards->next)
 	{
 		if (ft_strcmp(wcards->content, "") != 0)
 		{
-			name = ft_strstr(name, wcards->content);
+			name = ft_strdup(ft_strstr(name, wcards->content));
 			if (!name)
 				return (0);
 		}
@@ -188,6 +188,56 @@ void recursive_wcards(t_wildcard_moussa *node, char ***result)
 	closedir(dir);
 }
 
+
+
+int	ft_strcmp_nascii(const char *s1, const char *s2)
+{
+	size_t			i;
+	unsigned char	*true_s1;
+	unsigned char	*true_s2;
+
+	true_s1 = (unsigned char *)s1;
+	true_s2 = (unsigned char *)s2;
+	i = 0;
+	while (true_s2[i] || true_s1[i])
+	{
+		if (ft_tolower(true_s1[i]) != ft_tolower(true_s2[i]))
+		{
+			if (ft_tolower(true_s1[i]) < ft_tolower(true_s2[i]))
+				return (-1);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void sort_str2d_nascii(char **str)
+{
+	int		temp;
+	char	*lower;
+	int		i;
+	int		y;
+
+	y = -1;
+	while (str[++y] != NULL)
+	{
+		i = y;
+		temp = i;
+		lower = str[i];
+		while (str[++i] != NULL)
+		{
+			if (ft_strcmp_nascii(lower, str[i]) > 0)
+			{
+				temp = i;
+				lower = str[i];
+			}
+		}
+		str[temp] = str[y];
+		str[y] = lower;
+	}	
+}
+
 char **expand_wildcards(char *to_expand)
 {
 	t_wildcard_moussa *node;
@@ -211,6 +261,6 @@ char **expand_wildcards(char *to_expand)
 	recursive_wcards(node, &result);
 	if (result == NULL)
 		add_string_char_2d(&result, to_expand);
-	sort_str2d(result);
+	sort_str2d_nascii(result);
 	return (result);
 }

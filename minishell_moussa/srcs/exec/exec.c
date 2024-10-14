@@ -181,7 +181,8 @@ void	expand_cmd(t_token *cmd)
 	char *check;
 	char		**new_args;
 
-	new_args = NULL;
+	check = NULL;
+	new_args = strdup2d(&check);
 	if (cmd->args == NULL)
 		return ;
 	i = -1;

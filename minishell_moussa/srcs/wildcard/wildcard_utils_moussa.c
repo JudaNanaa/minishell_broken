@@ -3,27 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils_moussa.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 16:24:58 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/13 16:25:19 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/14 03:04:33 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wildcard.h"
+#include <stdio.h>
 
-int	ft_strncmp_reverse(char *s1, char *s2, size_t len_s2)
+int	ft_strncmp_reverse(char *s1, char *s2, int len_s2)
 {
 	int	len;
 
-	len = ft_strlen(s1);
-	while (len && len_s2)
+	len = ft_strlen(s1) - 1;
+	len_s2--;
+	while (len >= 0 && len_s2 >= 0)
 	{
 		if (s1[len] != s2[len_s2])
 			return (s1[len] - s2[len_s2]);
 		len--;
 		len_s2--;
 	}
+	if (len_s2 == -1)
+		return (0);
 	return (s1[len] - s2[len_s2]);
 }
 
