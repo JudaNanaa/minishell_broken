@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 14:25:05 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 02:57:02 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 03:28:43 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	is_match(char *name, t_wcards *wcards)
 		if (ft_strncmp(name, wcards->content, ft_strlen(wcards->content)) != 0)
 			return (0);
 	}
-	name = ft_strdup(name + ft_strlen(wcards->content));
+	name = name + ft_strlen(wcards->content);
 	wcards = wcards->next;
 	while (wcards->next)
 	{
 		if (ft_strcmp(wcards->content, "") != 0)
 		{
-			name = ft_strdup(ft_strstr(name, wcards->content));
+			name = ft_strstr(name, wcards->content);
 			if (!name)
 				return (0);
 		}
@@ -142,15 +142,14 @@ int check_name(char *name, char **expand)
 void recall_recursive_wcards(t_wildcard_moussa *node, struct dirent *elem,
 	char ***result, int flag)
 {
-	t_wildcard_moussa *new;
+	t_wildcard_moussa new;
 
-	new = new_node_wildcard();
-	new->base_path = ft_strjoin(node->base_path, elem->d_name);
+	new.base_path = ft_strjoin(node->base_path, elem->d_name);
 	if (flag == 1)
-		new->base_path = ft_strjoin(new->base_path, "/");
-	new->to_expand = strdup2d(&node->to_expand[1]);
-	new->dir = node->dir;
-	recursive_wcards(new, result);	
+		new.base_path = ft_re_strjoin(new.base_path, "/");
+	new.to_expand = strdup2d(&node->to_expand[1]);
+	new.dir = node->dir;
+	recursive_wcards(&new, result);	
 }
 
 void recursive_wcards(t_wildcard_moussa *node, char ***result)
