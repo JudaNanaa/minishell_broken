@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 12:03:48 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/14 02:56:21 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 14:07:54 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ typedef struct s_wildcard
 	t_path	*paths;
 }	t_wildcard;
 
+# define DIRR 0
+
 typedef struct s_wildcard_moussa
 {
 	char	*base_path;
 	char	**to_expand;
 	bool	dir;
-	struct s_wildcard_moussa	*next;
 } t_wildcard_moussa;
 
 typedef struct s_wcards

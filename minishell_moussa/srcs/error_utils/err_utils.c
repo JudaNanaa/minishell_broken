@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 23:24:41 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 05:21:50 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 15:27:58 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*replace_newline(char *str)
 	res = ft_malloc(sizeof(char)
 			* (ft_strlen(str) + count_char(str, '\n') + 1));
 	if (res == NULL)
-		return (error_log("replace_newline: malloc", true), str);
+		handle_malloc_error("replace newline");
 	while (str[++i] != '\0')
 	{
 		if (str[i] == '\n')

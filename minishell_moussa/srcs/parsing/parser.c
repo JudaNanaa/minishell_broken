@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 19:51:10 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 14:47:23 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void add_back_files(t_file **files, t_file *to_add)
 int add_redirections(t_token *redir, t_queue *queue)
 {
 	t_file *new;
-	
+
 	if (redir->next == NULL)
 		return (parse_err(NULL), EXIT_FAILURE);
 	if (is_redirection_type(redir->next->type))

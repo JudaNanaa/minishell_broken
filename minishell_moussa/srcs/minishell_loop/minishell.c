@@ -6,13 +6,14 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 20:39:23 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 15:54:48 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
 #include <readline/readline.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "../features/features.h"
 char	*minishell_prompt(void);
@@ -46,7 +47,10 @@ char	*ft_readline(t_data *data)
 	while (1)
 	{
 		prompt = minishell_prompt();
-		command_line = readline(prompt);
+		if (isatty(STDIN_FILENO))
+			command_line = readline(prompt);
+		else
+		 	command_line = get_next_line(0);
 		ft_free(prompt);
 		if (g_signal != 0)
 		{
@@ -54,7 +58,7 @@ char	*ft_readline(t_data *data)
 			continue ;
 		}
 		if (!command_line)
-			(ft_fprintf(2, "exit\n"), free_and_exit(data->status));
+			(print_exit(data), free_and_exit(data->status));
 		else if (ft_strcmp(command_line, "") == 0)
 			ft_free(command_line);
 		else
@@ -102,9 +106,17 @@ void loop_minishell(t_data *data)
 		command_line = ft_readline(data);
 		queue.first = lexer(data, command_line);
 		if (queue.first == NULL)
+		{
+			if (isatty(STDIN_FILENO) == false)
+				free_and_exit(data->status);
 			continue;
+		}
 		if (parser(&queue) == EXIT_FAILURE)
+		{
+			if (isatty(STDIN_FILENO) == false)
+				free_and_exit(data->status);
 			continue;
+		}
 		// queue.first = create_ast(queue.first, 0);
 		queue.first = create_ast_test(queue.first);
 		ft_free(command_line);

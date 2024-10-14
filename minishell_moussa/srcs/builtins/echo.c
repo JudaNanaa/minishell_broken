@@ -6,25 +6,11 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:01:22 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 04:59:10 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 15:01:28 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
-
-void	ft_putstr_echo(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\\')
-			i++;
-		else
-			ft_putchar(str[i++]);
-	}
-}
 
 int	all_char_are_the_same(char *str)
 {
@@ -58,9 +44,9 @@ void	loop_echo(char **args, int i)
 {
 	while (args[i])
 	{
-		ft_putstr_echo(args[i]);
+		ft_putstr(args[i]);
 		if (args[i + 1])
-			ft_putstr_echo(" ");
+			ft_putstr(" ");
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 16:24:58 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 03:04:33 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 13:34:18 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	ft_strncmp_reverse(char *s1, char *s2, int len_s2)
 		len--;
 		len_s2--;
 	}
+	if (len == -1 && len_s2 != -1)
+		return (-1);
 	if (len_s2 == -1)
 		return (0);
 	return (s1[len] - s2[len_s2]);
