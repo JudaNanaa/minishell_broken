@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 21:01:05 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 18:08:36 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "parsing.h"
 
 void	ft_addhistory(char	*str);
+char	*replace_aliases(char *cmd);
 
 int is_redirection_type(t_type type)
 {
@@ -52,15 +53,20 @@ void set_token_type(t_token *current, t_type type)
 		current->type = LOCAL_VAR;
 }
 
+// int	check_aliases()
+
 void add_to_queue(t_queue *queue, char *content, t_type type)
 {
 	t_token	*token;
 	t_token	*current;
 
+	// if (/* is an CMD */)
+	// {
+	// 	if ()
+	// }
 	token = ft_malloc(sizeof(t_token) * 1);
-	if (token == NULL){
-		// handle_malloc_error("add to queue");
-	}
+	if (token == NULL)
+		handle_malloc_error("add to queue");
 	ft_memset(token, 0, sizeof(t_token));
 	if (queue->first == NULL)
 		queue->first = token;

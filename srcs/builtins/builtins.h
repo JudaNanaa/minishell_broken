@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:17:37 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/10 18:12:35 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 15:46:37 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	print_env(t_env *env, int cas, t_data *info);
 char	*ft_pwd(int cas, t_data *info);
 void	ft_exit(char **args);
 void	ft_unset(char **args, t_data *info);
+void	print_exit(t_data *data);
 
 // PWD
 # define PRINT 2

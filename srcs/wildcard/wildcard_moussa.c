@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_moussa.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 14:25:05 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/13 17:17:38 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/14 14:10:12 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wildcard.h"
+#include <time.h>
+
+void recursive_wcards(t_wildcard_moussa *node, char ***result);
+
 
 int	is_match(char *name, t_wcards *wcards)
 {
@@ -55,22 +59,7 @@ char *find_base_path(char *str)
 		dest[i] = '\0';
 		i--;
 	}
-	if (i == -1)
-	{
-		ft_strcpy(dest, ".");
-		return (dest);
-	}
 	return (dest);
-}
-
-t_wildcard_moussa *new_node_wildcard(void)
-{
-	t_wildcard_moussa *new;
-
-	new = ft_malloc(sizeof(t_wildcard_moussa));
-	if (new == NULL)
-		handle_malloc_error("wildcards");
-	return (new);
 }
 
 t_wcards	*init_wcards(char *str)
@@ -97,120 +86,139 @@ t_wcards	*init_wcards(char *str)
 	return (wcards);
 }
 
-void add_back_wildcard(t_wildcard_moussa **first, t_wildcard_moussa *to_add)
+DIR *ft_opendir(char *path)
 {
-	t_wildcard_moussa *buff;
+	DIR *dir;
 
-	if (*first == NULL)
-		*first = to_add;
+	if (path[0] == '\0')
+		dir = opendir(".");
 	else
-	{
-		buff = *first;
-		while (buff->next)
-			buff = buff->next;
-		buff->next = to_add;
-	}
-	to_add->next = NULL;
+		dir = opendir(path);
+	return (dir);
 }
 
-void check_dir(t_wildcard_moussa *node, char ***result)
+int check_name(char *name, char **expand)
+{
+	if (expand[0][0] == '.' && name[0] == '.' && expand[1] == NULL)
+		return (true);
+	if ((ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0)
+		&& expand[1] == NULL)
+		return (false);
+	if (expand[0][0] != '.' && name[0] == '.')
+		return (false);
+	return (true);
+}
+
+void recall_recursive_wcards(t_wildcard_moussa *node, struct dirent *elem,
+	char ***result, int flag)
+{
+	t_wildcard_moussa new;
+
+	new.base_path = ft_strjoin(node->base_path, elem->d_name);
+	if (flag == DIRR)
+		new.base_path = ft_re_strjoin(new.base_path, "/");
+	new.to_expand = strdup2d(&node->to_expand[1]);
+	new.dir = node->dir;
+	recursive_wcards(&new, result);	
+}
+
+void recursive_wcards(t_wildcard_moussa *node, char ***result)
 {
 	DIR *dir;
 	struct dirent *elem;
-	t_wildcard_moussa *child_node;
-	t_wildcard_moussa *new;
 	t_wcards *wcards;
 
-	if (!node->to_expand[0])
+	if (node->to_expand[0] == NULL)
 	{
 		add_string_char_2d(result, node->base_path);
 		return;
 	}
 	wcards = init_wcards(node->to_expand[0]);
-	child_node = NULL;
-	dir = opendir(node->base_path);
+	dir = ft_opendir(node->base_path);
 	if (dir == NULL)
 		return ;
 	elem = readdir(dir);
 	while (elem != NULL)
 	{
-		if (elem->d_name[0] != '.'  && is_match(elem->d_name, wcards))
+		if (is_match(elem->d_name, wcards) && check_name(elem->d_name, node->to_expand))
 		{
 			if (node->to_expand[1] != NULL && elem->d_type == DT_DIR)
-			{
-				new = new_node_wildcard();
-				new->base_path = ft_strjoin(node->base_path, elem->d_name);
-				new->base_path = ft_strjoin(new->base_path, "/");
-				new->to_expand = strdup2d(&node->to_expand[1]);
-				new->dir = node->dir;
-				printf("%s\n", new->base_path);
-				check_dir(new, result);
-			}
+				recall_recursive_wcards(node, elem, result, DIRR);
 			else if (node->to_expand[1] == NULL)
 			{
-				if (node->dir == true && elem->d_type != DT_DIR)
-					return ;
 				if (node->dir == true && elem->d_type == DT_DIR)
-				{
-					new = new_node_wildcard();
-					new->base_path = ft_strjoin(node->base_path, elem->d_name);
-					new->base_path = ft_strjoin(new->base_path, "/");
-					new->to_expand = strdup2d(&node->to_expand[1]);
-					new->dir = node->dir;
-					printf("%s\n", new->base_path);
-					check_dir(new, result);				
-				}
-				else
-				{
-					new = new_node_wildcard();
-					new->base_path = ft_strjoin(node->base_path, elem->d_name);
-					new->to_expand = strdup2d(&node->to_expand[1]);
-					new->dir = node->dir;
-					printf("%s\n", new->base_path);
-					check_dir(new, result);				
-				}
+					recall_recursive_wcards(node, elem, result, DIRR);
+				else if (node->dir == false)
+					recall_recursive_wcards(node, elem, result, ALL);
 			}
-			// add_back_wildcard(&child_node, new);
 		}
 		elem = readdir(dir);
 	}
 	closedir(dir);
 }
 
-void expand_wildcards(char *to_expand)
+int	ft_strcmp_nascii(const char *s1, const char *s2)
 {
-	t_wildcard_moussa *node;
+	size_t			i;
+	unsigned char	*true_s1;
+	unsigned char	*true_s2;
+
+	true_s1 = (unsigned char *)s1;
+	true_s2 = (unsigned char *)s2;
+	i = 0;
+	while (true_s2[i] || true_s1[i])
+	{
+		if (ft_tolower(true_s1[i]) != ft_tolower(true_s2[i]))
+		{
+			if (ft_tolower(true_s1[i]) < ft_tolower(true_s2[i]))
+				return (-1);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void sort_str2d_nascii(char **str)
+{
+	int		temp;
+	char	*lower;
+	int		i;
+	int		y;
+
+	y = -1;
+	while (str[++y] != NULL)
+	{
+		i = y;
+		temp = i;
+		lower = str[i];
+		while (str[++i] != NULL)
+		{
+			if (ft_strcmp_nascii(lower, str[i]) > 0)
+			{
+				temp = i;
+				lower = str[i];
+			}
+		}
+		str[temp] = str[y];
+		str[y] = lower;
+	}	
+}
+
+char **expand_wildcards(char *to_expand)
+{
+	t_wildcard_moussa node;
 	char **result;
 
 	result = NULL;
-	node = new_node_wildcard();
-	node->base_path =  find_base_path(to_expand);
-	printf("base path == %s\n",node->base_path);
+	node.base_path = find_base_path(to_expand);
+	node.dir = false;
 	if (to_expand[ft_strlen(to_expand) - 1] == '/')
-		node->dir = true;
-	else
-		node->dir = false;
-	node->to_expand = ft_split(ft_strstr(to_expand, node->base_path) + ft_strlen(node->base_path), "/");
-	printf("node->to_expand :\n");
-	printf_2d_array(node->to_expand);
-	printf("-------------------------------------------------------------------\n");
-	check_dir(node, &result);
-	printf("-------------------------------------------------------------------\n");
-	printf("result :\n");
-	printf_2d_array(result);
-}
-
-int main(int argc, char **argv)
-{
-	if (argc == 1)
-	{
-		printf("mets deux arguments\n");
-		return 1;
-	}
-	if (ft_strchr(argv[1], '*') == NULL)
-	{
-		printf("ya pas de wildcard\n");
-		return 1;
-	}
-	expand_wildcards(argv[1]);
+		node.dir = true;
+	node.to_expand = ft_split(to_expand + ft_strlen(node.base_path), "/");
+	recursive_wcards(&node, &result);
+	if (result == NULL)
+		add_string_char_2d(&result, to_expand);
+	sort_str2d_nascii(result);
+	return (result);
 }

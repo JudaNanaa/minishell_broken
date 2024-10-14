@@ -92,6 +92,7 @@ void exec_cmd(t_token *node)
 	path = find_path(node->args[0], data);
 	if (path == NULL)
 	{
+		node->args[0] = replace_newline(node->args[0]);
 		ft_fprintf(2, "%s: %s: command not found\n", data->name, node->args[0]);
 		free_and_exit(127);
 	}
@@ -179,8 +180,10 @@ void	expand_cmd(t_token *cmd)
 	int j;
 	char *arg;
 	char *check;
+	char		**new_args;
 
-
+	check = NULL;
+	new_args = strdup2d(&check);
 	if (cmd->args == NULL)
 		return ;
 	i = -1;
@@ -191,10 +194,36 @@ void	expand_cmd(t_token *cmd)
 		arg = expand_if_necessary(cmd->args[i]);
 		if (arg[0] == '\0' && !is_a_quotes(check[ft_strlen(check) - 1]))
 			continue;
-		cmd->args[j++] = arg;
+		cmd->args[j] = arg;
+		if (is_a_quotes(check[ft_strlen(check) - 1]) || ft_strchr(cmd->args[j], '*') == NULL)
+			add_string_char_2d(&new_args, cmd->args[j]);
+		else
+			new_args = re_str2djoin(new_args, expand_wildcards(cmd->args[j]));
+		j++;
 		ft_free(check);
 	}
-	cmd->args[j] = NULL;
+	cmd->args = new_args;
+}
+
+void exec_redirection(t_token *node)
+{
+	free_and_exit(open_files(node));
+}
+
+void exec_local_var(t_token *node)
+{
+	t_env	*new;
+	t_data	*data;
+
+	data = get_data(NULL, GET);
+	node->content = expand_line(node->content);
+	if (!node->content)
+		handle_malloc_error("local variable");
+	new = init_env(node->content, LOCAL);
+	if (!new)
+		handle_malloc_error("local variable");
+	add_back_env(&data->env, new);
+	data->status = 0;
 }
 
 void exec(t_token *current)
@@ -217,6 +246,10 @@ void exec(t_token *current)
 		exec_pipe(current);
 	else if (current->type == LIST)
 		exec_list(current);
+	else if (is_redirection_type(current->type))
+		exec_redirection(current);
+	else if (current->type == LOCAL_VAR)
+		exec_local_var(current);
 }
 
 void	set_exec(t_data *data, struct termios *term)
@@ -272,11 +305,11 @@ void single_command(t_token *node)
 	int status;
 	int pid;
 
-	if (node->type == SUBSHELL)
+	if (node->type == SUBSHELL || is_redirection_type(node->type))
 	{
 		pid = ft_fork();
 		if (pid == 0)
-			exec_subshell(node);
+			exec(node);
 		(waitpid(pid, &status, 0), exit_status(status));
 	}
 	else
@@ -303,7 +336,8 @@ void start_exec(t_token *node)
 	set_exec(data, &term);
 	if (data->is_child == false)
 		set_signal_parent_exec();
-	if ((node->type == CMD && check_built_in(node->args[0]) == false)
+	if (is_redirection_type(node->type) ||(node->type == CMD
+		&& check_built_in(node->args[0]) == false)
 		|| node->type == SUBSHELL)
 			single_command(node);
 	else

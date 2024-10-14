@@ -49,6 +49,7 @@ run_test() {
 }
 
 # Load all test files
+source ./bin/test_wildcards.sh
 source ./bin/test_echo.sh
 source ./bin/test_export.sh
 source ./bin/test_unset.sh

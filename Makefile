@@ -31,9 +31,9 @@ ERROR = $(addprefix error_utils/, err_utils.c error_code.c free_and_exit.c print
 
 SIGNALS = $(addprefix signal/, signal.c signal_utils.c)
 
-AST = $(addprefix ast/, ast_moussa.c)
+# AST = $(addprefix ast/, ast_moussa.c)
 
-# AST = $(addprefix ast/, ast.c)
+AST = $(addprefix ast/, ast.c)
 
 EXEC = $(addprefix exec/, exec.c exec_utils.c)
 
@@ -47,7 +47,7 @@ FEATURES = $(addprefix features/, alias_utils.c aliases.c history.c prompt_utils
 
 UTILS = $(addprefix utils/, utils.c)
 
-WILDCARDS = $(addprefix wildcard/, wildcard.c wildcard_utils.c)
+WILDCARDS = $(addprefix wildcard/, wildcard_moussa.c wildcard_utils_moussa.c)
 
 OBJS_DIR = .objets/
 

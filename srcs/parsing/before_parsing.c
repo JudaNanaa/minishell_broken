@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:26:16 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 20:52:42 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:13:42 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,34 @@
 #include <readline/chardefs.h>
 #include <unistd.h>
 
+void print_error_quote(char *prompt, char *flag)
+{
+	t_data	*data;
+
+	data = get_data(NULL, GET);
+	if (ft_strcmp(flag, NEWLINE1) == 0)
+	{
+		if (ft_strcmp(prompt, "quote> ") == 0)
+			ft_putendl_fd(S_U_EOF, 2);
+		else
+			ft_putendl_fd(D_U_EOF, 2);
+	}
+	ft_fprintf(STDERR_FILENO,
+			"%s: syntax error: unexpected end of file\n", data->name);
+}
+
 char	*get_open_input(char *str, char *prompt, char *flag)
 {
 	char	*new_line;
 	t_data	*data;
 
 	data = get_data(NULL, GET);
+	if (isatty(STDIN_FILENO) == false)
+		(print_error_quote(prompt, flag), free_and_exit(data->status));
 	new_line = readline(prompt);
 	if (!new_line)
 	{
-		if (ft_strcmp(flag, NEWLINE1) == 0)
-		{
-		if (ft_strcmp(prompt, "quote> ") == 0)
-			ft_putendl_fd(S_U_EOF, 2);
-		else
-			ft_putendl_fd(D_U_EOF, 2);
-		}
-		ft_fprintf(STDERR_FILENO,
-			"%s: syntax error: unexpected end of file\n", data->name);
+		print_error_quote(prompt, flag);
 		if (ft_strcmp(flag, SEMICOLON) == 0 || ft_strcmp(flag, SPACE1) == 0)
 			(ft_fprintf(2, "exit\n"), free_and_exit(data->status));
 		return (data->status = 2, NULL);

@@ -6,7 +6,7 @@
 /*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:06:54 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/13 19:31:42 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/13 19:48:54 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ static int	ft_count_word(char const *s, char *c)
 
 	cpt = 0;
 	i = 0;
-	// printf("s == %s\n", s);
 	while (s[i])
 	{
-		while (ft_is_in_charset(s[i], c) && s[i])
+		while (s[i] && ft_is_in_charset(s[i], c))
 			i++;
-		while (!ft_is_in_charset(s[i], c) && s[i])
+		while (s[i] && !ft_is_in_charset(s[i], c))
 			i++;
 		cpt++;
 	}

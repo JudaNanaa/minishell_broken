@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
+#include <unistd.h>
 
 
 int	ft_is_in_range(char *nb)
@@ -38,14 +39,19 @@ int	ft_is_in_range(char *nb)
 	}
 	return (1);
 }
-// TODO: fix exit
+
+void	print_exit(t_data *data)
+{
+	if (data->is_child == 0 && isatty(STDIN_FILENO))
+		ft_fprintf(2, "exit\n");	
+}
+
 void	ft_exit(char **args)
 {
 	t_data	*data;
 
 	data = get_data(NULL, GET);
-	if (data->is_child == 0)
-		ft_fprintf(2, "exit\n");
+	print_exit(data);
 	if (args[1])
 	{
 		if (ft_is_numeric(args[1]) == 0 || ft_is_in_range(args[1]) == 0)

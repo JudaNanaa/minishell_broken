@@ -6,51 +6,44 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:06:03 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/10 22:53:43 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:55:40 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "features.h"
 
-int	replace_aliases(t_token *last_token)
+char	*replace_aliases(char *cmd)
 {
 	static char	***alias;
+	char		*cmd_alias;
 
+	if (cmd == NULL)
+		return (cmd);
 	if (alias == NULL)
 	{
 		alias = get_alias(NULL);
 		if (alias == NULL)
-			return (EXIT_SUCCESS);
+			return (cmd);
 	}
-	if (last_token == NULL)
-		return (EXIT_SUCCESS);
-	if (check_if_alias(last_token, alias) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (replace_aliases(last_token->left) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (replace_aliases(last_token->right) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	cmd_alias = check_if_alias(cmd, alias);
+	if (cmd_alias == NULL)
+		return (cmd);
+	return (cmd_alias);
 }
 
-int	check_if_alias(t_token *command, char ***aliases)
+char	*check_if_alias(char *cmd, char ***aliases)
 {
 	int		i;
-	char	**command_arr;
 
 	i = -1;
-	command_arr = command->args;
-	if (command->type != CMD || command_arr[0] == NULL)
-		return (EXIT_SUCCESS);
+	if (cmd == NULL)
+		return (NULL);
 	while (aliases[++i] != NULL)
 	{
-		if (ft_strcmp(aliases[i][0], command_arr[0]) == 0)
-		{
-			command->args = insert_alias(command_arr, aliases[i]);
-			return (EXIT_SUCCESS);
-		}
+		if (ft_strcmp(aliases[i][0], cmd) == 0)
+			return (ft_strdup(aliases[i][1]));
 	}
-	return (EXIT_SUCCESS);
+	return (NULL);
 }
 
 int	init_aliases(void)

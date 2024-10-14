@@ -6,19 +6,23 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:28:02 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/12 17:14:14 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:26:44 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "../../includes/includes.h"
+#include <time.h>
+#include <unistd.h>
 
 int remove_quotes(char *str);
 
-
 void	ctrl_D_mssg(int i, char *eof)
 {
-	ft_fprintf(STDERR_FILENO, "bash: warning: here-document at line %i ", i);
+	t_data *data;
+
+	data = get_data(NULL, GET);
+	ft_fprintf(2, "%s: warning: here-document at line %i ", data->name, i);
 	ft_fprintf(STDERR_FILENO, "delimited by end-of-file (wanted `%s')\n", eof);
 }
 
@@ -46,6 +50,8 @@ int	get_heredoc(t_file *new)
 	new->expand_heredoc = remove_quotes(new->path);
 	while (++i)
 	{
+		if (isatty(STDIN_FILENO) == false)
+			(ctrl_D_mssg(i, new->path), free_and_exit(data->status));
 		input = readline("heredoc> ");
 		if (input == NULL)
 			return (ctrl_D_mssg(i, new->path), EXIT_SUCCESS);

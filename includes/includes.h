@@ -6,7 +6,7 @@
 /*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 23:17:14 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/13 17:52:09 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/13 17:52:36 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <sys/wait.h>
 # include <term.h>
 # include "../srcs/environement/env.h"
+# include "../srcs/wildcard/wildcard.h"
 # include "../srcs/data/data.h"
 # include "../srcs/error_utils/errors_utils.h"
 # include "../srcs/environement/env.h"

@@ -6,7 +6,7 @@
 /*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 21:47:05 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/14 00:15:19 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/13 20:32:48 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-void				sort_str2d(char **str);
 int					count_char(char *str, char char_to_count);
 char				*ft_re_strdup(const char *src);
 char				*ft_re_strjoin(const char *s1, const char *s2);
@@ -97,6 +96,7 @@ void				ft_lstadd_back(t_list **lst, t_list *neww);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
+void				sort_str2d(char **str);
 
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_strlen(const char *str);

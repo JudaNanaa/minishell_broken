@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 00:56:49 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 19:38:13 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:52:40 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ t_token	*add_next_pyramid(t_token *left, t_token *operator, int weight)
 	{
 		operator->right = operator->next;
 	}
-	operator->right->prev = operator;
+	if (operator->right->prev != NULL)
+		operator->right->prev = operator;
 	add_next_pyramid(operator, next_operator(operator), weight);
 	return (operator);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 06:52:03 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/13 20:03:36 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/13 18:16:35 by ibaby            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ char	**re_str2djoin(char **str1, char **str2)
 {
 	char	**join;
 
-	if (str1 == NULL || str2 == NULL)
+	if (str1 == NULL && str2 == NULL)
 		return (NULL);
 	if (str2 == NULL && str1 != NULL)
-		return (str2 = strdup2d(str1), ft_free(str1), str2);
+		return (str2 = strdup2d(str1), ft_free_2d(str1), str2);
 	if (str1 == NULL && str2 != NULL)
-		return (str1 = strdup2d(str2), str1);
+		return (strdup2d(str2));
 	join = ft_malloc(sizeof(char *)
 			* (ft_strlen_2d(str1) + ft_strlen_2d(str2) + 1));
 	if (join == NULL)

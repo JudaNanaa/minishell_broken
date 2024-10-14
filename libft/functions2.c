@@ -101,8 +101,6 @@ void	sort_str2d(char **str)
 	int		y;
 
 	y = -1;
-	if (str == NULL)
-		return ;
 	while (str[++y] != NULL)
 	{
 		i = y;

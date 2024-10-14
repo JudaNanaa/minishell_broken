@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 21:10:52 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 18:12:27 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,26 @@ void ft_dup2(int newfd, int oldfd)
 	}
 }
 
+int print_ambiguous_redir(char *wildcard)
+{
+	t_data *data;
+
+	data = get_data(NULL, GET);
+	ft_fprintf(STDERR_FILENO, "%s: %s: ambiguous redirect\n",
+		data->name, wildcard);
+	if (data->is_child == true)
+		free_and_exit(1);
+	return (EXIT_FAILURE);
+}
+
 int expand_file_path(t_file *file)
 {
 	char *path;
 	t_data *data;
+	char **wcards;
+	char *check;
 
+	check = ft_strdup(file->path);
 	data = get_data(NULL, GET);
 	path = expand_if_necessary(ft_strdup(file->path));
 	if (path[0] == '\0')
@@ -53,6 +68,13 @@ int expand_file_path(t_file *file)
 		if (data->is_child == true)
 			free_and_exit(1);
 		return (EXIT_FAILURE);
+	}
+	if (!(is_a_quotes(check[ft_strlen(check) - 1]) || ft_strchr(path, '*') == NULL))
+	{
+		wcards = expand_wildcards(path);
+		if (ft_strlen_2d(wcards) > 1)
+			return (print_ambiguous_redir(path));
+		path = wcards[0];
 	}
 	file->path = path;
 	return (EXIT_SUCCESS);
@@ -133,6 +155,7 @@ int	open_heredoc(t_file *file)
 	close(fd[0]);
 	return (EXIT_SUCCESS);
 }
+
 
 int open_files(t_token *node)
 {
