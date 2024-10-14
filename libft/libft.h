@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 21:47:05 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/13 20:32:48 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/14 21:17:42 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_printf(const char *str, ...);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_free_split(char **split);
+int					ft_is_in_charset(char c, char *set);
 
 char				*ft_itoa(int n);
 char				*ft_strcpy(char *dest, char *src);

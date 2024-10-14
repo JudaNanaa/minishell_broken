@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 18:08:36 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 22:14:40 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void set_token_type(t_token *current, t_type type)
 			tmp = tmp->prev;
 		}
 	}
-	if (current->type == CMD && ft_strchr(current->content, '='))
+	if (current->type == CMD && ft_strchr(current->content, '=')
+		&& is_a_good_variable(current->content))
 		current->type = LOCAL_VAR;
 }
 

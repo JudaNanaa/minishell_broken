@@ -104,18 +104,22 @@ void exec_cmd(t_token *node)
 
 void exec_subshell(t_token *node)
 {
-	char *argv[4];
 	t_data *data;
-	char **envp;
+	t_queue queue;
 
-	data = get_data(NULL, GET);
 	open_files(node);
-	argv[0] = ft_strdup("./minishell");
-	argv[1] = ft_strdup("-c");
-	argv[2] = ft_strdup(node->content);
-	argv[3] = NULL;
-	envp = t_env_to_envp(data->env, GLOBAL);
-	execve(argv[0], argv, envp);
+	data = get_data(NULL, GET);
+	queue.first = lexer(data, node->content);
+	if (queue.first == NULL)
+		free_and_exit(data->status);
+	if (parser(&queue) == EXIT_FAILURE)
+			free_and_exit(data->status);
+	queue.first = create_ast(queue.first, 0);
+	ft_free(node->content);
+	// replace_aliases(queue.first);
+	// print_AST(queue.first);
+	start_exec(queue.first);
+	free_and_exit(data->status);
 }
 
 void do_builtin(t_token *node)
@@ -174,6 +178,18 @@ void printf_2d_array(char **to_print)
 	}
 }
 
+char *expand_if_tilde(char *str)
+{
+	char *env;
+
+	if (str[0] != '~' || (str[1] != '/' && str[1] != '\0'))
+		return (str);
+	env = getenv("HOME");
+	if (env == NULL)
+		return (str);
+	return (ft_strjoin(env, &str[1]));
+}
+
 void	expand_cmd(t_token *cmd)
 {
 	int	i;
@@ -191,6 +207,7 @@ void	expand_cmd(t_token *cmd)
 	while (cmd->args[++i] != NULL)
 	{
 		check = ft_strdup(cmd->args[i]);
+		cmd->args[i] = expand_if_tilde(cmd->args[i]);	
 		arg = expand_if_necessary(cmd->args[i]);
 		if (arg[0] == '\0' && !is_a_quotes(check[ft_strlen(check) - 1]))
 			continue;
@@ -292,10 +309,27 @@ char	*find_path_cd(char *command)
 	return (NULL);
 }
 
-int try_cd(char *directory)
+int try_cd(t_token *node)
 {
-	if (chdir(directory) == -1)
-		return (EXIT_FAILURE);
+	char	**str;
+	char	*env;
+
+	if (node->args[0][0] == '-')
+	{
+		env = ft_getenv("OLDPWD");
+		if (env == NULL)
+			return (EXIT_FAILURE);
+		if (chdir(env) == -1)
+			return (EXIT_FAILURE);
+		ft_printf("%s\n", env);
+		return (EXIT_SUCCESS);
+	}
+	str = strdup2d(node->args);
+	expand_cmd(node);
+	if (ft_strlen_2d(node->args) != 1)
+		return (node->args = str, EXIT_FAILURE);
+	if (chdir(node->args[0]) == -1)
+		return (node->args = str, EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -317,7 +351,7 @@ void single_command(t_token *node)
 		path = find_path_cd(node->args[0]);
 		if (path == NULL && !node->args[1])
 		{
-			if (try_cd(node->args[0]) == EXIT_SUCCESS)
+			if (try_cd(node) == EXIT_SUCCESS)
 				return;
 		}
 		pid = ft_fork();

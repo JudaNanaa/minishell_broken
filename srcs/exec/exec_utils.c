@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 18:12:27 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 22:06:06 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,12 +330,22 @@ void exec_or(t_token *node)
 		fork_and_exec(node->left);
 	else
 		exec(node->left);
-	if (data->status != 0)
+	if (data->status == 128 + SIGQUIT && data->is_child == false)
 	{
-		if (check_if_fork(node->right))
-			fork_and_exec(node->right);
-		else
-			exec(node->right);
+		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+		data->signaled = 0;
+	}
+	if (data->status != 0 && data->status != 128 + SIGINT)
+	{
+		if (data->is_child == 1 && data->status == 128 + SIGQUIT)
+			return ;
+		if (data->status != 0)
+		{
+			if (check_if_fork(node->right))
+				fork_and_exec(node->right);
+			else
+				exec(node->right);
+		}
 	}	
 }
 

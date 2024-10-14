@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 17:50:45 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/14 21:57:31 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void loop_minishell(t_data *data)
 		// queue.first = create_ast_test(queue.first);
 		ft_free(command_line);
 		// replace_aliases(queue.first);
-		print_AST(queue.first);
+		// print_AST(queue.first);
 		// print_AST_test(queue.first);
 		start_exec(queue.first);
 	}
