@@ -93,6 +93,7 @@ $(NAME) : message $(OBJS)
 	@$(CC) $(C_FLAGS) $(OBJS) srcs/garbage_collector/garbage_collector.a -L ./libft -lft -lreadline -o $@
 	@echo
 	@echo "💻$(BLUE)executable created >_$(END)✅"
+	@cp .supp.supp ~
 	@echo
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
@@ -118,7 +119,7 @@ message :
 	@echo "$(BLUE)🔩compiling minishell🔩$(END)"
 	
 leak : all
-	@valgrind --leak-check=full --show-below-main=no --show-leak-kinds=all --track-fds=yes    --trace-children=yes --suppressions=.supp.supp ./minishell
+	@valgrind --leak-check=full --show-below-main=no --show-leak-kinds=all --track-fds=yes    --trace-children=yes --suppressions=/home/madamou/.supp.supp ./minishell
 
 push:
 	@python3 -m c_formatter_42 $(addprefix $(SRCS_DIR), main.c $(PARSING) $(PROMPT) $(SIGNALS) \
