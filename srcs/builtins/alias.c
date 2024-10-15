@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:19:32 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 23:21:47 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/15 10:46:18 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,23 @@
 #include "builtins.h"
 #include <time.h>
 
+void	print_alias(t_alias *alias)
+{
+	// while (alias)
+	// {
+	// 	printf("alias %s", alias->key);
+	// 	if (alias->value)
+	// 		printf("=\"%s\"\n", alias->value);
+	// 	else
+	// 		printf("\n");
+	// 	alias = alias->next;
+	// }
+	while (alias)
+	{
+		printf("%s='%s'\n", alias->key, alias->value);
+		alias = alias->next;
+	}
+}
 
 t_alias *init_alias(char *alias)
 {
@@ -149,6 +166,6 @@ int	ft_alias(t_data *data, char **content)
 		i++;
 	}
 	if (i == 1)
-		print_env(data->env, 2, data);
+		print_alias(data->alias);
 	return (data->status);
 }
