@@ -6,15 +6,15 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 01:38:28 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 15:31:34 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/15 19:30:38 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
 
-int	is_a_separator(char c)
+int	is_a_separator(char *c)
 {
-	if (c == '>' || c == '<' || c == '|' || c == '&' || c == ';' || c == '\n')
+	if (*c == '>'  || *c == '<' || *c == '|' || ft_strncmp(c, "&&", 2) == 0|| *c == ';' || *c == '\n')
 		return (1);
 	return (0);
 }

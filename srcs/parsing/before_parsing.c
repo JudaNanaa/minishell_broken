@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:26:16 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 17:13:42 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/15 19:59:12 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*get_open_input(char *str, char *prompt, char *flag)
 	if (isatty(STDIN_FILENO) == false)
 		(print_error_quote(prompt, flag), free_and_exit(data->status));
 	new_line = readline(prompt);
+	if (g_signal != 0)
+		return (NULL);
 	if (!new_line)
 	{
 		print_error_quote(prompt, flag);
@@ -136,7 +138,7 @@ char	*check_if_command_line_is_good(t_data *data, char *str)
 	int		i;
 
 	i = 0;
-	while (i == 0)
+	while (g_signal == 0 && i == 0)
 	{
 		while (g_signal == 0 && str[i])
 		{
@@ -146,7 +148,7 @@ char	*check_if_command_line_is_good(t_data *data, char *str)
 				str = check_if_quote_close(str, &i);
 			i++;
 		}
-		if (!str[i])
+		if (g_signal == 0 && !str[i])
 			str = check_last_token(str, &i);
 	}
 	if (g_signal != 0)

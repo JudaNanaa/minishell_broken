@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:57:30 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 14:47:23 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/15 19:29:36 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ char *get_command_subshell(char *str)
 	// Si str == vide faire un readline une fois et faire la function
 	while (str[i] && is_space(str[i]))
 		i++;
-	while (str[i + j] && !is_space(str[i + j]) && !is_a_separator(str[i + j]))
+	while (str[i + j] && !is_space(str[i + j]) && !is_a_separator(&str[i + j]))
 		j++;
 	str[i + j] = '\0';
 	return (&str[i]);

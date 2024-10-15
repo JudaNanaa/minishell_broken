@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:49:14 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 23:26:25 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/15 19:29:36 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int add_token(t_queue *queue, char *str, int *i)
 	char	*cmd;
 
 	j = 0;
-	while (str[*i + j] && !is_space(str[*i + j]) && !is_a_separator(str[*i + j]))
+	while (str[*i + j] && !is_space(str[*i + j]) && !is_a_separator(&str[*i + j]))
 	{
 		if (str[*i + j] == '"')
 			continue_until_find(*i, &j, str, '"');
@@ -269,7 +269,7 @@ void	add_elem(t_queue *queue, char *str, int *i)
 	{
 		add_queue_subshell(queue, str, i);
 	}
-	else if (is_a_separator(str[*i]))
+	else if (is_a_separator(&str[*i]))
 		add_metachars(queue, str, i);
 	else
 		add_token(queue, str, i);
