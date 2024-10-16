@@ -6,13 +6,14 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:26:16 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/15 19:59:12 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/16 19:08:07 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
 #include "parsing.h"
 #include <readline/chardefs.h>
+#include <time.h>
 #include <unistd.h>
 
 void print_error_quote(char *prompt, char *flag)
@@ -133,6 +134,32 @@ char	*check_if_paranthesis_close(char *str, int i)
 	return (check_if_paranthesis_close(str, -1));
 }
 
+char	*check_if_bracket_close(char *str, int i)
+{
+	int	open_bracket;
+	int	close_bracket;
+
+	open_bracket = 0;
+	close_bracket = 0;
+	while (str[++i])
+	{
+		if (str[i] == '"')
+			continue_until_find(0, &i, str, '"');
+		if (str[i] == '\'')
+			continue_until_find(0, &i, str, '\'');
+		if (str[i] == '{')
+			open_bracket++;
+		if (str[i] == '}')
+			close_bracket++;
+	}
+	if (open_bracket < close_bracket)
+		return (NULL);
+	if (open_bracket == close_bracket)
+		return (str);
+	str = get_open_input(str, "cursh> ", SPACE1);
+	return (check_if_bracket_close(str, -1));
+}
+
 char	*check_if_command_line_is_good(t_data *data, char *str)
 {
 	int		i;
@@ -153,5 +180,8 @@ char	*check_if_command_line_is_good(t_data *data, char *str)
 	}
 	if (g_signal != 0)
 		return (set_status_if_signal(data), NULL);
+	str = check_if_bracket_close(str, -1);
+	if (!str)
+		return (NULL);
 	return (check_if_paranthesis_close(str, -1));
 }

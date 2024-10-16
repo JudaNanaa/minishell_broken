@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 05:33:34 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/14 17:19:24 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/16 19:05:00 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ t_token	*last_command(t_token *current);
 
 t_token	*ast_top(t_token *current);
 
-void	print_AST(t_token *command)
-{
-	int array[1024] = {0};
+// void	print_AST(t_token *command)
+// {
+// 	int array[1024] = {0};
 
-	command = ast_top(command);
-	printTree(command, 0, 0, array);
-}
+// 	command = ast_top(command);
+// 	printTree(command, 0, 0, array);
+// }
 
 void	print_AST_test(t_token *command)
 {

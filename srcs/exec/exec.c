@@ -116,7 +116,8 @@ void exec_subshell(t_token *node)
 		free_and_exit(data->status);
 	if (parser(&queue) == EXIT_FAILURE)
 			free_and_exit(data->status);
-	queue.first = create_ast(queue.first, 0);
+	// queue.first = create_ast(queue.first, 0);
+	queue.first = create_ast_test(queue.first);
 	ft_free(node->content);
 	// replace_aliases(queue.first);
 	// print_AST(queue.first);
