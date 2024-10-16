@@ -78,6 +78,8 @@ int main(int argc, char **argv, char **envp)
 {
 	t_data data;
 
+    rl_bind_keyseq("\\e[A", arrow_handler); // Bind pour la flèche du haut
+    rl_bind_keyseq("\\e[B", arrow_handler);
 	get_data(&data, SET);
 	data.name = "minishell";
 	data.status = 0;

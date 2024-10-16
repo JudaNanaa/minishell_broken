@@ -69,7 +69,10 @@ char *find_in_history(const char *text, int direction) {
     static int index;
     HIST_ENTRY **history_list;
     int len;
+    static char **good_tab;
+    static int len_tab;
     char *cmd;
+    int i;
 
     history_list =  history_get_history_state()->entries;
     if (!history_list)
@@ -77,23 +80,36 @@ char *find_in_history(const char *text, int direction) {
     
     if (initial_text == NULL || save_text == NULL || strcmp(save_text, text) != 0) {
         // get_or_save_text(strdup(text), SET);
+        i = 0;
+        good_tab = NULL;
+        while (i < history_length)
+        {
+            cmd = history_list[i]->line;
+            if (strncmp(cmd, text, strlen(text)) == 0)
+                add_string_char_2d(&good_tab, cmd);
+            i++;
+        }
+        len_tab = ft_strlen_2d(good_tab);
         initial_text = strdup(text);
-        index = history_length;
+        index = len_tab;
     }
     len = strlen(initial_text);
-
-    while (index <= history_length)
+    while (index <= len_tab)
     {
         index += direction;
         if (index < 0)
-            index = 0;
-        else if (index == history_length + 1 || index == history_length)
         {
-            index = history_length;
+            index = 0;
+            save_text = strdup(text);
+            return strdup(text);
+        }
+        else if (index == len_tab + 1 || index == len_tab)
+        {
+            index = len_tab;
             save_text = strdup(initial_text);
             return strdup(initial_text);
         }
-        cmd = history_list[index]->line;
+        cmd = good_tab[index];
         if (strncmp(cmd, initial_text, len) == 0) {
             // index += direction;
             save_text = strdup(cmd);

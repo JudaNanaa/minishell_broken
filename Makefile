@@ -43,7 +43,7 @@ BUILTINS = $(addprefix builtins/, env.c cd.c echo.c export.c pwd.c exit.c unset.
 
 ENV = $(addprefix environement/, environement_variables.c environement_variables_utils.c)
 
-FEATURES = $(addprefix features/, history.c prompt_utils.c prompt.c)
+FEATURES = $(addprefix features/, history.c prompt_utils.c prompt.c readline_history.c)
 
 UTILS = $(addprefix utils/, utils.c)
 

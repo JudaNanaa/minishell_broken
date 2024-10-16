@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 22:25:18 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/14 22:59:58 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/16 06:44:18 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,9 @@ int		is_delayed(char *head);
 char	*add_arrow(void);
 char	*urgency_prompt(void);
 char	*check_if_alias(char *cmd, char ***aliases);
+
+
+//readline
+int		arrow_handler(int count, int key);
 
 #endif
