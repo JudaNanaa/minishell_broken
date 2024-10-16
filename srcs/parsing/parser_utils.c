@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 01:38:28 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/15 19:30:38 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/17 00:10:57 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_space(char c)
 
 void	continue_until_find(int i, int *j, char *str, char to_find)
 {
-	(*j)++;
+	++(*j);
 	while (str[i + *j] != to_find)
 		(*j)++;
 }

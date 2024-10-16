@@ -6,11 +6,21 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:01:22 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 15:01:28 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/17 00:09:07 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
+#include <unistd.h>
+
+void error_printf(char *command)
+{
+	t_data *data;
+
+	data = get_data(NULL, GET);
+	ft_fprintf(STDERR_FILENO, "%s: %s: ", data->name, command);
+	perror("write error");
+}
 
 int	all_char_are_the_same(char *str)
 {
@@ -40,33 +50,42 @@ int	if_option(char **args, int *i)
 	return (j);
 }
 
-void	loop_echo(char **args, int i)
+int	loop_echo(char **args, int i)
 {
 	while (args[i])
 	{
-		ft_putstr(args[i]);
+		if (ft_printf(args[i]) == -1)
+			return (error_printf("echo"), 1);
 		if (args[i + 1])
-			ft_putstr(" ");
+		{
+			if (ft_printf(" ") == -1)
+				return (error_printf("echo"), 1);
+		}
 		i++;
 	}
+	return (0);
 }
 
-void	ft_echo(char **args, t_data *info)
+void	ft_echo(char **args, t_data *data)
 {
 	int	i;
 
+	data->status = 0;
 	if (args[1])
 	{
 		i = 1;
 		if (if_option(args, &i))
-			loop_echo(args, i);
+			data->status = loop_echo(args, i);
 		else
 		{
-			loop_echo(args, i);
-			printf("\n");
+			data->status = loop_echo(args, i);
+			if (printf("\n") == -1)
+				return (error_printf("echo"));
 		}
 	}
 	else
-		printf("\n");
-	info->status = 0;
+	{
+		if (printf("\n") == -1)
+			return (error_printf("echo"));
+	}
 }

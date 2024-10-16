@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:30:29 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/12 00:13:43 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/10/17 00:27:51 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	exit_status(int status);
 char	*expand_line(char *line);
 int	is_a_var_char(char c);
 char	*expand_if_necessary(char *str);
+char *expand_if_tilde(char *str);
 
 
 #endif

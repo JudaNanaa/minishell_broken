@@ -214,7 +214,7 @@ void	expand_cmd(t_token *cmd)
 	while (cmd->args[++i] != NULL)
 	{
 		check = ft_strdup(cmd->args[i]);
-		cmd->args[i] = expand_if_tilde(cmd->args[i]);	
+		cmd->args[i] = expand_if_tilde(cmd->args[i]);
 		arg = expand_if_necessary(cmd->args[i]);
 		if (arg[0] == '\0' && !is_a_quotes(check[ft_strlen(check) - 1]))
 			continue;

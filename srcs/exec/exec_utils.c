@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/14 23:51:48 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/17 00:29:11 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int expand_file_path(t_file *file)
 	char *check;
 
 	check = ft_strdup(file->path);
+	file->path = expand_if_tilde(file->path);
 	data = get_data(NULL, GET);
 	path = expand_if_necessary(ft_strdup(file->path));
 	if (path[0] == '\0')
