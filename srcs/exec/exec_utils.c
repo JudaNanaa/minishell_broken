@@ -6,13 +6,14 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/17 00:29:11 by madamou          ###   ########.fr       */
+/*   Updated: 2024/10/30 02:06:55 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
 #include "exec.h"
 #include <fcntl.h>
+#include <stdio.h>
 #include <sys/wait.h>
 #include <unistd.h>
 

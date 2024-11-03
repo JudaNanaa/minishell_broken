@@ -19,7 +19,7 @@ alias msh="cd ~/Desktop/circle_3/minishell"
 alias paco="/home/ibaby/francinette/tester.sh"
 alias mv="mv -i"
 alias cp="cp -i"
-echo 'set show-all-if-ambiguous on
+echo -n 'set show-all-if-ambiguous on
 set menu-complete-display-prefix on
 TAB: menu-complete
 set colored-completion-prefix on
