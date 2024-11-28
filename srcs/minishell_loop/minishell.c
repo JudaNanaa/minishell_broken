@@ -6,13 +6,15 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 00:18:38 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/16 19:02:32 by madamou          ###   ########.fr       */
+/*   Updated: 2024/11/29 00:12:53 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/includes.h"
+#include <fcntl.h>
 #include <readline/readline.h>
 #include <stdio.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #include "../features/features.h"
@@ -82,12 +84,8 @@ void subshell_routine(t_data *data, char *command_line)
 		free_and_exit(data->status);
 	if (parser(&queue) == EXIT_FAILURE)
 		free_and_exit(data->status);
-	// queue.first = create_ast(queue.first, 0);
 	queue.first = create_ast_test(queue.first);
 	ft_free(command_line);
-	// print_AST(queue.first);
-	// replace_aliases(queue.first);
-	// print_AST_test(queue.first);
 	start_exec(queue.first);
 	free_and_exit(data->status);
 
@@ -97,11 +95,10 @@ void loop_minishell(t_data *data)
 {
 	char *command_line;
 	t_queue queue;
-	
+
 	while (true)
 	{
 		set_signal_parent();
-		clear_garbage();
 		command_line = ft_readline(data);
 		queue.first = lexer(data, command_line);
 		if (queue.first == NULL)
@@ -116,12 +113,9 @@ void loop_minishell(t_data *data)
 				free_and_exit(data->status);
 			continue;
 		}
-		// queue.first = create_ast(queue.first, 0);
 		queue.first = create_ast_test(queue.first);
 		ft_free(command_line);
-		// replace_aliases(queue.first);
-		// print_AST(queue.first);
-		// print_AST_test(queue.first);
 		start_exec(queue.first);
+		clear_garbage();
 	}
 }

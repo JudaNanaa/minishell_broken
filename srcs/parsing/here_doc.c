@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:28:02 by ibaby             #+#    #+#             */
-/*   Updated: 2024/10/14 22:11:34 by madamou          ###   ########.fr       */
+/*   Updated: 2024/11/29 00:43:28 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ int	get_heredoc(t_file *new)
 		if (isatty(STDIN_FILENO) == false)
 			(ctrl_D_mssg(i, new->path), free_and_exit(data->status));
 		input = readline("heredoc> ");
-		if (input == NULL)
-			return (ctrl_D_mssg(i, new->path), EXIT_SUCCESS);
 		if (g_signal != 0)
 			return (set_status_if_signal(data), EXIT_FAILURE);
+		if (input == NULL)
+			return (ctrl_D_mssg(i, new->path), EXIT_SUCCESS);
 		if (ft_strcmp(input, new->path) == 0)
 			return (EXIT_SUCCESS);
 		add_string_char_2d(&new->heredoc_content, input);
@@ -265,9 +265,6 @@ char	*normal_or_dollar(char *str, int *i, int j)
 	(ft_free(sub_str), ft_free(end_str));
 	return (str);
 }
-
-
-
 
 char	*if_dquote(char *str, int *i)
 {

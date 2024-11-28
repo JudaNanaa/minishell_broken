@@ -87,7 +87,7 @@ void exec_cmd(t_token *node)
 
 	data = get_data(NULL, GET);
 	open_files(node);
-	if (node->args[0] == NULL||ft_strcmp(node->args[0], ":") == 0)
+	if (node->args[0] == NULL || ft_strcmp(node->args[0], ":") == 0)
 		free_and_exit(EXIT_SUCCESS);
 	if (ft_strcmp(node->args[0], "!") == 0)
 		free_and_exit(EXIT_FAILURE);
@@ -116,11 +116,8 @@ void exec_subshell(t_token *node)
 		free_and_exit(data->status);
 	if (parser(&queue) == EXIT_FAILURE)
 			free_and_exit(data->status);
-	// queue.first = create_ast(queue.first, 0);
 	queue.first = create_ast_test(queue.first);
 	ft_free(node->content);
-	// replace_aliases(queue.first);
-	// print_AST(queue.first);
 	start_exec(queue.first);
 	free_and_exit(data->status);
 }
