@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:26:16 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/16 19:08:07 by madamou          ###   ########.fr       */
+/*   Updated: 2024/12/16 15:32:45 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ char	*check_if_dquote_close(char *str, int *i)
 	if (str[*i] == '\0')
 	{
 		str = get_open_input(str, "dquote> ", NEWLINE1);
-		*i = -1;
+		*i = 0;
 	}
+	else
+		(*i)++;
 	return (str);
 }
 
@@ -76,8 +78,10 @@ char	*check_if_quote_close(char *str, int *i)
 	if (str[*i] == '\0')
 	{
 		str = get_open_input(str, "quote> ", NEWLINE1);
-		*i = -1;
+		*i = 0;
 	}
+	else
+		(*i)++;
 	return (str);
 }
 
@@ -165,19 +169,22 @@ char	*check_if_command_line_is_good(t_data *data, char *str)
 	int		i;
 
 	i = 0;
-	while (g_signal == 0 && i == 0)
+	while (g_signal == 0 && str && i == 0)
 	{
-		while (g_signal == 0 && str[i])
+		while (g_signal == 0 && str && str[i])
 		{
 			if (g_signal == 0 && str[i] == '"')
 				str = check_if_dquote_close(str, &i);
 			else if (g_signal == 0 && str[i] == '\'')
 				str = check_if_quote_close(str, &i);
-			i++;
+			else
+				i++;
 		}
-		if (g_signal == 0 && !str[i])
+		if (g_signal == 0 && str && !str[i])
 			str = check_last_token(str, &i);
 	}
+	if (!str)
+		return (NULL);
 	if (g_signal != 0)
 		return (set_status_if_signal(data), NULL);
 	str = check_if_bracket_close(str, -1);
