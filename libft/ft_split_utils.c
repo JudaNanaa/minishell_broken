@@ -6,13 +6,13 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:12:07 by madamou           #+#    #+#             */
-/*   Updated: 2024/06/01 20:15:35 by madamou          ###   ########.fr       */
+/*   Updated: 2024/12/16 15:01:08 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_is_in_charset(char c, char *set)
+int	is_in_charset(char c, char *set)
 {
 	int	index;
 

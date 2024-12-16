@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+        */
+/*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:06:54 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/13 19:48:54 by ibaby            ###   ########.fr       */
+/*   Updated: 2024/12/16 15:01:08 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_is_in_charset(char c, char *set);
+int			is_in_charset(char c, char *set);
 
 static int	ft_count_word(char const *s, char *c)
 {
@@ -23,15 +23,15 @@ static int	ft_count_word(char const *s, char *c)
 	i = 0;
 	while (s[i])
 	{
-		while (s[i] && ft_is_in_charset(s[i], c))
+		while (s[i] && is_in_charset(s[i], c))
 			i++;
-		while (s[i] && !ft_is_in_charset(s[i], c))
+		while (s[i] && !is_in_charset(s[i], c))
 			i++;
 		cpt++;
 	}
 	if (i == 0)
 		return (0);
-	if (ft_is_in_charset(s[i - 1], c))
+	if (is_in_charset(s[i - 1], c))
 		cpt--;
 	return (cpt);
 }
@@ -75,15 +75,15 @@ static int	ft_split_words(char **split, char const *s, char *c)
 	index = 0;
 	while (s[i])
 	{
-		while (ft_is_in_charset(s[i], c) && s[i])
+		while (is_in_charset(s[i], c) && s[i])
 			i++;
 		j = 0;
-		while (!ft_is_in_charset(s[i], c) && s[i])
+		while (!is_in_charset(s[i], c) && s[i])
 		{
 			i++;
 			j++;
 		}
-		if (!ft_is_in_charset(s[i - 1], c))
+		if (!is_in_charset(s[i - 1], c))
 		{
 			split[index] = ft_norminette(s, i, j);
 			if (ft_free_split1(split, index++) == 0)

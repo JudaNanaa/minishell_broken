@@ -6,7 +6,7 @@
 /*   By: madamou <madamou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 21:27:01 by madamou           #+#    #+#             */
-/*   Updated: 2024/10/30 02:06:55 by madamou          ###   ########.fr       */
+/*   Updated: 2024/12/16 15:18:53 by madamou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int expand_file_path(t_file *file)
 	check = ft_strdup(file->path);
 	file->path = expand_if_tilde(file->path);
 	data = get_data(NULL, GET);
-	path = expand_if_necessary(ft_strdup(file->path));
+	path = expand_str(ft_strdup(file->path));
 	if (path[0] == '\0')
 	{
 		ft_fprintf(2, "%s: %s: ambiguous redirect\n", data->name, file->path);
@@ -144,7 +144,7 @@ int	open_heredoc(t_file *file)
 		if (file->expand_heredoc == true)
 		{
 			while (file->heredoc_content[++i])
-				ft_putendl_fd(expand_line(file->heredoc_content[i]), fd[1]);
+				ft_putendl_fd(expand_str(file->heredoc_content[i]), fd[1]);
 		}
 		else
 		{

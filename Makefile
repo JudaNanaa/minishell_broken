@@ -25,7 +25,7 @@ C_FLAGS = -Wall -Wextra -Werror -g3
 
 SRCS_DIR = srcs/
 
-PARSING = $(addprefix parsing/, before_parsing.c lexer.c parser_utils.c parser.c here_doc.c)
+PARSING = $(addprefix parsing/, before_parsing.c lexer.c parser_utils.c parser.c here_doc.c expand.c)
 
 ERROR = $(addprefix error_utils/, err_utils.c error_code.c free_and_exit.c print_err.c)
 

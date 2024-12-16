@@ -196,9 +196,6 @@ char *expand_if_tilde(char *str)
 
 void	expand_cmd(t_token *cmd)
 {
-	int	i;
-	int j;
-	char *arg;
 	char *check;
 	char		**new_args;
 
@@ -206,24 +203,7 @@ void	expand_cmd(t_token *cmd)
 	new_args = strdup2d(&check);
 	if (cmd->args == NULL)
 		return ;
-	i = -1;
-	j = 0;
-	while (cmd->args[++i] != NULL)
-	{
-		check = ft_strdup(cmd->args[i]);
-		cmd->args[i] = expand_if_tilde(cmd->args[i]);
-		arg = expand_if_necessary(cmd->args[i]);
-		if (arg[0] == '\0' && !is_a_quotes(check[ft_strlen(check) - 1]))
-			continue;
-		cmd->args[j] = arg;
-		if (is_a_quotes(check[ft_strlen(check) - 1]) || ft_strchr(cmd->args[j], '*') == NULL)
-			add_string_char_2d(&new_args, cmd->args[j]);
-		else
-			new_args = re_str2djoin(new_args, expand_wildcards(cmd->args[j]));
-		j++;
-		ft_free(check);
-	}
-	cmd->args = new_args;
+	cmd->args = expand(cmd->args);
 }
 
 void exec_redirection(t_token *node)
@@ -237,7 +217,7 @@ void exec_local_var(t_token *node)
 	t_data	*data;
 
 	data = get_data(NULL, GET);
-	node->content = expand_line(node->content);
+	node->content = expand_str(node->content);
 	if (!node->content)
 		handle_malloc_error("local variable");
 	new = init_env(node->content, LOCAL);
@@ -251,7 +231,7 @@ void exec(t_token *current)
 {
 	if (current->type == CMD)
 	{
-		expand_cmd(current);
+		current->args = expand(current->args);
 		if (check_built_in(current->args[0]))
 			exec_builtin(current);
 		else
@@ -329,7 +309,7 @@ int try_cd(t_token *node)
 		return (EXIT_SUCCESS);
 	}
 	str = strdup2d(node->args);
-	expand_cmd(node);
+	node->args = expand(node->args);
 	if (ft_strlen_2d(node->args) != 1)
 		return (node->args = str, EXIT_FAILURE);
 	if (chdir(node->args[0]) == -1)

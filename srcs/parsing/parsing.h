@@ -99,5 +99,8 @@ int	is_a_quotes(char c);
 int is_redirection_type(t_type type);
 int is_operator_type(t_type type);
 int remove_quotes(char *str);
+char **expand(char **args);
+char *expand_str(char *str);
+
 
 #endif
