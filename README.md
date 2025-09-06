@@ -255,8 +255,8 @@ make leak     # Run with Valgrind
 
 ## 👥 Contributors
 
-- **[madamou](https://github.com/madamou)**
-- **[ibaby](https://github.com/ibaby)**
+- **[JudaNanaa](https://github.com/JudaNanaa)**
+- **[iibabyy](https://github.com/iibabyy)**
 
 ## 🔍 Technical Details
 
