@@ -108,10 +108,9 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 		echo -n "▱" ; \
 	done
 	@echo -n " [$(shell echo "scale=2; $(COMPILED_FILES)/$(TOTAL_FILES) * 100" | bc)%] "
-# @echo -n ""
-# @printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
-# @echo -n " "
-# @printf "%s" $(notdir $<)
+	@printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
+	@echo -n " "
+	@printf "%s" $(notdir $<)
 	@printf "\e[0K\r"
 
 message :

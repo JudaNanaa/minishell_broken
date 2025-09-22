@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ibaby <ibaby@student.42.fr>                +#+  +:+       +#+         #
+#    By: madamou <madamou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/23 16:07:55 by madamou           #+#    #+#              #
-#    Updated: 2024/10/11 21:43:19 by ibaby            ###   ########.fr        #
+#    Updated: 2025/09/22 05:53:51 by madamou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,10 +76,9 @@ $(OBJS_DIR)/%.o : %.c
 		echo -n "▱" ; \
 	done
 	@echo -n " [$(shell echo "scale=2; $(COMPILED_FILES)/$(TOTAL_FILES) * 100" | bc)%] "
-# @echo -n ""
-# @printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
-# @echo -n " "
-# @printf "%s" $(notdir $<)
+	@printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
+	@echo -n " "
+	@printf "%s" $(notdir $<)
 	@printf "\e[0K\r"
 
 bonus: all $(OBJS_BONUS)

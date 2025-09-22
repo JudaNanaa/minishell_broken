@@ -8,13 +8,28 @@ YELLOW=	$(shell tput -Txterm setaf 3)
 BLUE=	$(shell tput -Txterm setaf 6)
 END= 	$(shell tput -Txterm sgr0)
 
-#			#
+CC = cc
 
+CC_FLAGS = -Wall -Wextra -Werror -g3
 
-SRCS =	srcs/garbage_collector.c	\
-		srcs/garbage_utils_1.c		\
-		srcs/garbage_utils_2.c		\
-		srcs/garbage_collector_2.c	\
+SRCS_DIR = srcs/
+
+SRCS =	$(addprefix $(SRCS_DIR), \
+		garbage_collector.c \
+		garbage_utils_1.c \
+		garbage_utils_2.c \
+		garbage_collector_2.c)
+
+# SRCS := $(SRCS:%=$(SRCS_DIR)/%)
+
+NAME = ./garbage_collector.a
+
+OBJS_DIR = .objets/
+
+OBJS = $(SRCS:$(SRCS_DIR)%.c=$(OBJS_DIR)%.o)
+
+DIR_DUP = mkdir -p $(@D)
+
 
 #	Loading bar	#
 
@@ -27,17 +42,10 @@ COMPILED_FILES    := 0
 
 #				#
 
-NAME = ./garbage_collector.a
-
-OBJS = $(SRCS:.c=.o)
-
-CC = cc
-
-CC_FLAGS = -Wall -Wextra -Werror -g3
-
 all: $(NAME)
 
-%.o : %.c
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c
+	@$(DIR_DUP)
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 	@$(eval COMPILED_FILES := $(shell echo $$(($(COMPILED_FILES)+1))))
 	@echo -n " "
@@ -48,20 +56,16 @@ all: $(NAME)
 		echo -n "▱" ; \
 	done
 	@echo -n " [$(shell echo "scale=2; $(COMPILED_FILES)/$(TOTAL_FILES) * 100" | bc)%] "
-	# @echo -n "["
-	# @printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
-	# @echo -n "] "
-	# @printf "%s" $(notdir $<)
+	@printf "%d/%d" $(COMPILED_FILES) $(TOTAL_FILES)
+	@echo -n " "
+	@printf "%s" $(notdir $<)
 	@printf "\e[0K\r"
 
 $(NAME): $(OBJS) $(SRCS)
 	@ar cr $(NAME) $(OBJS)
-# @echo ""
-# @echo "$(BLUE)Garbage Collector done ✅$(END)"
-# @echo ""
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(OBJS_DIR)
 
 fclean: clean
 	@rm -rf $(NAME)
