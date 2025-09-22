@@ -196,11 +196,6 @@ char *expand_if_tilde(char *str)
 
 void	expand_cmd(t_token *cmd)
 {
-	char *check;
-	char		**new_args;
-
-	check = NULL;
-	new_args = strdup2d(&check);
 	if (cmd->args == NULL)
 		return ;
 	cmd->args = expand(cmd->args);
