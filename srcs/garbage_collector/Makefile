@@ -33,8 +33,8 @@ DIR_DUP = mkdir -p $(@D)
 
 #	Loading bar	#
 
-G                = \e[92m
-X                 = \e[0m
+G                = $(GREEN)
+X                 = $(WHITE)
 BAR_SIZE        = 50
 
 TOTAL_FILES        := $(words $(SRCS))
