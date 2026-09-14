@@ -32,6 +32,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <term.h>
+# include <termios.h>
 # include "../srcs/environement/env.h"
 # include "../srcs/wildcard/wildcard.h"
 # include "../srcs/data/data.h"
